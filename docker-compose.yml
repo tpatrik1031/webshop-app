@@ -1,0 +1,37 @@
+services:
+  php:
+    build: dev-docker/php-fpm
+    container_name: webshop-app
+    working_dir: /app
+    environment:
+      - XDEBUG_IDE_KEY=PHPSTORM
+      - XDEBUG_DISCOVER_CLIENT_HOST=0
+      - PHP_IDE_CONFIG=serverName=example-local
+#      - XDEBUG_MODE=coverage
+      - XDEBUG_MODE=debug
+      - XDEBUG_START_WITH_REQUEST=yes
+      - XDEBUG_CLIENT_HOST=host.docker.internal
+      - XDEBUG_CLIENT_PORT=9000
+      - WEB_DOCUMENT_ROOT=/app/public
+      - PHP_MEMORY_LIMIT=-1
+    volumes:
+      - .:/app:cached
+    ports:
+      - "8000:80"
+      - "5173:5173"
+
+  database:
+      image: mysql:8.0.20
+      container_name: webshop-db
+      command: [ '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci','--default-authentication-plugin=mysql_native_password' ]
+      environment:
+          MYSQL_DATABASE: ${DB_DATABASE}
+          MYSQL_USER: ${DB_USERNAME}
+          MYSQL_PASSWORD: ${DB_PASSWORD}
+          MYSQL_ROOT_PASSWORD: 'root'
+      ports:
+          - '3306:3306'
+      volumes:
+          - db-data:/var/lib/mysql
+volumes:
+  db-data:
