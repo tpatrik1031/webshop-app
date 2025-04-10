@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class BillingAddress extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'country',
+        'zip',
+        'city',
+        'address',
+    ];
 }
