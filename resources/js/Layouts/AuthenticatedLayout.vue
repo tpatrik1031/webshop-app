@@ -7,6 +7,7 @@ import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3'
+import Footer from '@/Components/Footer.vue';
 
 const user = usePage().props.auth.user;
 const showingNavigationDropdown = ref(false);
@@ -14,18 +15,18 @@ const showingNavigationDropdown = ref(false);
 
 <template>
     <div>
-        <div class="min-h-screen bg-neutral-300">
+        <div class="min-h-screen bg-gray-100 flex flex-col">
             <nav
-                class="border-b border-white bg-neutral-300"
+                class="bg-neutral-200"
             >
                 <!-- Primary Navigation Menu -->
                 <div class="px-4 sm:px-6 lg:px-12">
                     <div class="flex h-16 justify-between">
                         <!-- Logo (left) -->
                         <div class="flex shrink-0 items-center">
-                            <Link :href="route('dashboard')">
-                                <h1 class="text-sky-950 text-xl md:text-3xl font-extrabold mt-1 md:mt-0">
-                                    DOG
+                            <Link :href="route('home.index')">
+                                <h1 class="text-cyan-500 text-xl md:text-3xl font-extrabold mt-1 md:mt-0">
+                                    DOGSHOP
                                 </h1>
                             </Link>
                         </div>
@@ -34,49 +35,49 @@ const showingNavigationDropdown = ref(false);
                         <div class="hidden sm:flex justify-center flex-1">
                             <div class="flex space-x-8">
                                 <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
+                                    :href="route('home.index')"
+                                    :active="route().current('home.index')"
                                 >
                                     Kezdőlap
                                 </NavLink>
                                 <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
+                                    :href="route('shop.food')"
+                                    :active="route().current('shop.food')"
                                 >
                                     Étel
                                 </NavLink>
                                 <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
+                                    :href="route('shop.toy')"
+                                    :active="route().current('shop.toy')"
                                 >
                                     Játékok
                                 </NavLink>
                                 <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
+                                    :href="route('shop.accessories')"
+                                    :active="route().current('shop.accessories')"
                                 >
                                     Kiegészítők
                                 </NavLink>
                                 <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
-                                    v-if="user && user.is_admin === 1"
-                                >
-                                    Felhasználók
-                                </NavLink>
-                                <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
+                                    :href="route('products.index')"
+                                    :active="route().current('products.index')"
                                     v-if="user && user.is_admin === 1"
                                 >
                                     Termékek
                                 </NavLink>
                                 <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
+                                    :href="route('orders.index')"
+                                    :active="route().current('orders.index')"
                                     v-if="user && user.is_admin === 1"
                                 >
                                     Rendelések
+                                </NavLink>
+                                <NavLink
+                                    :href="route('users.index')"
+                                    :active="route().current('users.index')"
+                                    v-if="user && user.is_admin === 1"
+                                >
+                                    Felhasználók
                                 </NavLink>
                             </div>
                         </div>
@@ -114,7 +115,17 @@ const showingNavigationDropdown = ref(false);
                                         <DropdownLink
                                             :href="route('profile.edit')"
                                         >
-                                            Fiók
+                                            Címek kezelése
+                                        </DropdownLink>
+                                        <DropdownLink
+                                            :href="route('profile.edit')"
+                                        >
+                                            Kutyáim
+                                        </DropdownLink>
+                                        <DropdownLink
+                                            :href="route('profile.edit')"
+                                        >
+                                            Biztonsági beállítások
                                         </DropdownLink>
                                         <DropdownLink
                                             :href="route('logout')"
@@ -181,46 +192,46 @@ const showingNavigationDropdown = ref(false);
                 >
                     <div class="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :href="route('home.index')"
+                            :active="route().current('home.index')"
                         >
                             Kezdőlap
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :href="route('shop.food')"
+                            :active="route().current('shop.food')"
                         >
                             Étel
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :href="route('shop.toy')"
+                            :active="route().current('shop.toy')"
                         >
                             Játékok
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :href="route('shop.accessories')"
+                            :active="route().current('shop.accessories')"
                         >
                             Kiegészítők
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :href="route('users.index')"
+                            :active="route().current('users.index')"
                             v-if="user && user.is_admin === 1"
                         >
                             Felhasználók
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :href="route('products.index')"
+                            :active="route().current('products.index')"
                             v-if="user && user.is_admin === 1"
                         >
                             Termékek
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :href="route('orders.index')"
+                            :active="route().current('orders.index')"
                             v-if="user && user.is_admin === 1"
                         >
                             Rendelések
@@ -243,9 +254,11 @@ const showingNavigationDropdown = ref(false);
             </nav>
 
             <!-- Page Content -->
-            <main>
+            <main class="flex-grow">
                 <slot />
             </main>
+
+            <Footer />
         </div>
     </div>
 </template>
