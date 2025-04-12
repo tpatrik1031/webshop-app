@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShopController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,9 +24,49 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Home
+    Route::get('/home', [HomeController::class, 'index'])
+    ->name('home.index');
+
+    // Users
+    Route::get('/users/list', [UserController::class, 'index'])
+        ->name('users.index');
+    Route::put('/users/{user}/update', [UserController::class, 'update'])
+        ->name('users.update');
+    Route::delete('/users/{user}/delete', [UserController::class, 'delete'])
+        ->name('users.delete');
+
+    // Products
+    Route::get('/products/list', [ProductController::class, 'index'])
+        ->name('products.index');
+    Route::post('/products/store', [ProductController::class, 'store'])
+        ->name('products.store');
+    Route::put('/products/{product}/update', [ProductController::class, 'update'])
+        ->name('products.update');
+    Route::delete('/products/{product}/delete', [ProductController::class, 'delete'])
+        ->name('products.delete');
+
+    // Orders
+    Route::get('/orders/list', [OrderController::class, 'index'])
+        ->name('orders.index');
+    Route::put('/orders/{order}/update', [OrderController::class, 'update'])
+        ->name('orders.update');
+    Route::delete('/orders/{order}/delete', [OrderController::class, 'delete'])
+        ->name('orders.delete');
+
+    Route::get('/shop/food', [ShopController::class, 'food'])
+        ->name('shop.food');
+
+    Route::get('/shop/toy', [ShopController::class, 'toy'])
+        ->name('shop.toy');
+
+    Route::get('/shop/accessories', [ShopController::class, 'accessories'])
+        ->name('shop.accessories');
 });
 
 require __DIR__.'/auth.php';

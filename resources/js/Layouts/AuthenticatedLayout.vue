@@ -6,53 +6,94 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
+import { usePage } from '@inertiajs/vue3'
+import Footer from '@/Components/Footer.vue';
 
+const user = usePage().props.auth.user;
 const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
     <div>
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="min-h-screen bg-gray-100 flex flex-col">
             <nav
-                class="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800"
+                class="bg-neutral-200"
             >
                 <!-- Primary Navigation Menu -->
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="px-4 sm:px-6 lg:px-12">
                     <div class="flex h-16 justify-between">
-                        <div class="flex">
-                            <!-- Logo -->
-                            <div class="flex shrink-0 items-center">
-                                <Link :href="route('dashboard')">
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
-                                    />
-                                </Link>
-                            </div>
+                        <!-- Logo (left) -->
+                        <div class="flex shrink-0 items-center">
+                            <Link :href="route('home.index')">
+                                <h1 class="text-cyan-500 text-xl md:text-3xl font-extrabold mt-1 md:mt-0">
+                                    DOGSHOP
+                                </h1>
+                            </Link>
+                        </div>
 
-                            <!-- Navigation Links -->
-                            <div
-                                class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
-                            >
+                        <!-- Navigation Links (center) -->
+                        <div class="hidden sm:flex justify-center flex-1">
+                            <div class="flex space-x-8">
                                 <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
+                                    :href="route('home.index')"
+                                    :active="route().current('home.index')"
                                 >
-                                    Dashboard
+                                    Kezdőlap
+                                </NavLink>
+                                <NavLink
+                                    :href="route('shop.food')"
+                                    :active="route().current('shop.food')"
+                                >
+                                    Étel
+                                </NavLink>
+                                <NavLink
+                                    :href="route('shop.toy')"
+                                    :active="route().current('shop.toy')"
+                                >
+                                    Játékok
+                                </NavLink>
+                                <NavLink
+                                    :href="route('shop.accessories')"
+                                    :active="route().current('shop.accessories')"
+                                >
+                                    Kiegészítők
+                                </NavLink>
+                                <NavLink
+                                    :href="route('products.index')"
+                                    :active="route().current('products.index')"
+                                    v-if="user && user.is_admin === 1"
+                                >
+                                    Termékek
+                                </NavLink>
+                                <NavLink
+                                    :href="route('orders.index')"
+                                    :active="route().current('orders.index')"
+                                    v-if="user && user.is_admin === 1"
+                                >
+                                    Rendelések
+                                </NavLink>
+                                <NavLink
+                                    :href="route('users.index')"
+                                    :active="route().current('users.index')"
+                                    v-if="user && user.is_admin === 1"
+                                >
+                                    Felhasználók
                                 </NavLink>
                             </div>
                         </div>
 
-                        <div class="hidden sm:ms-6 sm:flex sm:items-center">
+                        <!-- User Profile (right) -->
+                        <div class="hidden sm:flex sm:items-center">
                             <!-- Settings Dropdown -->
-                            <div class="relative ms-3">
+                            <div class="relative">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
+                                                class="inline-flex items-center rounded-full border border-transparent bg-cyan-500 px-4 py-2 text-sm font-medium leading-4 text-white transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                             >
-                                                {{ $page.props.auth.user.name }}
+                                                {{ user.user_name }}
 
                                                 <svg
                                                     class="-me-0.5 ms-2 h-4 w-4"
@@ -74,14 +115,24 @@ const showingNavigationDropdown = ref(false);
                                         <DropdownLink
                                             :href="route('profile.edit')"
                                         >
-                                            Profile
+                                            Címek kezelése
+                                        </DropdownLink>
+                                        <DropdownLink
+                                            :href="route('profile.edit')"
+                                        >
+                                            Kutyáim
+                                        </DropdownLink>
+                                        <DropdownLink
+                                            :href="route('profile.edit')"
+                                        >
+                                            Biztonsági beállítások
                                         </DropdownLink>
                                         <DropdownLink
                                             :href="route('logout')"
                                             method="post"
                                             as="button"
                                         >
-                                            Log Out
+                                            Kijelentkezés
                                         </DropdownLink>
                                     </template>
                                 </Dropdown>
@@ -89,7 +140,7 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <!-- Hamburger -->
-                        <div class="-me-2 flex items-center sm:hidden">
+                        <div class="flex items-center sm:hidden">
                             <button
                                 @click="
                                     showingNavigationDropdown =
@@ -141,58 +192,73 @@ const showingNavigationDropdown = ref(false);
                 >
                     <div class="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :href="route('home.index')"
+                            :active="route().current('home.index')"
                         >
-                            Dashboard
+                            Kezdőlap
                         </ResponsiveNavLink>
-                    </div>
-
-                    <!-- Responsive Settings Options -->
-                    <div
-                        class="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600"
-                    >
-                        <div class="px-4">
-                            <div
-                                class="text-base font-medium text-gray-800 dark:text-gray-200"
-                            >
-                                {{ $page.props.auth.user.name }}
-                            </div>
-                            <div class="text-sm font-medium text-gray-500">
-                                {{ $page.props.auth.user.email }}
-                            </div>
-                        </div>
-
-                        <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')">
-                                Profile
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                :href="route('logout')"
-                                method="post"
-                                as="button"
-                            >
-                                Log Out
-                            </ResponsiveNavLink>
-                        </div>
+                        <ResponsiveNavLink
+                            :href="route('shop.food')"
+                            :active="route().current('shop.food')"
+                        >
+                            Étel
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('shop.toy')"
+                            :active="route().current('shop.toy')"
+                        >
+                            Játékok
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('shop.accessories')"
+                            :active="route().current('shop.accessories')"
+                        >
+                            Kiegészítők
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('users.index')"
+                            :active="route().current('users.index')"
+                            v-if="user && user.is_admin === 1"
+                        >
+                            Felhasználók
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('products.index')"
+                            :active="route().current('products.index')"
+                            v-if="user && user.is_admin === 1"
+                        >
+                            Termékek
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('orders.index')"
+                            :active="route().current('orders.index')"
+                            v-if="user && user.is_admin === 1"
+                        >
+                            Rendelések
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('profile.edit')"
+                            :active="route().current('profile.edit')"
+                        >
+                            Fiók
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('logout')"
+                            method="post"
+                            as="button"
+                        >
+                            Kijelentkezés
+                        </ResponsiveNavLink>
                     </div>
                 </div>
             </nav>
 
-            <!-- Page Heading -->
-            <header
-                class="bg-white shadow dark:bg-gray-800"
-                v-if="$slots.header"
-            >
-                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
-            </header>
-
             <!-- Page Content -->
-            <main>
+            <main class="flex-grow">
                 <slot />
             </main>
+
+            <Footer />
         </div>
     </div>
 </template>

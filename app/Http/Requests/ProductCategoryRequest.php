@@ -23,6 +23,7 @@ class ProductCategoryRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'type' => ['required', 'string', 'max:255'],
         ];
     }
 }
