@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -28,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile/addresses', [AccountController::class, 'index'])->name('account.addresses.index');
 
     // Home
     Route::get('/home', [HomeController::class, 'index'])
@@ -67,6 +69,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/shop/accessories', [ShopController::class, 'accessories'])
         ->name('shop.accessories');
+
+    Route::get('/shop/details/{id}', [ShopController::class, 'showProductDetail'])
+        ->name('shop.product.show');
 });
 
 require __DIR__.'/auth.php';
