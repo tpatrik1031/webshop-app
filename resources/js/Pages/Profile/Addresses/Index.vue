@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <div class="flex flex-col md:flex-row justify-between w-full p-12 gap-8">
+        <div class="flex flex-col md:flex-row justify-between w-full p-8 gap-8 mb-16">
             <div class="flex-col w-full border rounded-xl bg-white shadow-md">
                 <div class="flex p-4">
                     <h1 class="text-xl md:text-2xl font-bold">Szállítási cím</h1>
@@ -47,12 +47,20 @@
                         placeholder="Cím..."
                         :errors="errors.address"
                     />
-                    <div>
-                        Ugyan ez a számlázási
+                    <div class="flex items-center space-x-2 mx-1 pt-3">
+                        <input
+                            id="same_address"
+                            type="checkbox"
+                            v-model="shippingForm.same_address"
+                            class="form-checkbox h-5 w-5 text-cyan-500 rounded my-1"
+                        />
+                        <label for="same_address" class="text-sm select-none">
+                            Ugyanaz, mint a számlázási cím
+                        </label>
                     </div>
                 </div>
                 <div class="flex flex-grow flex-row justify-end front p-6">
-                    <Button @click="saveShippingAddress()" variant="primary">Mentés</Button>
+                    <Button @click="saveShippingAddress" variant="primary">Mentés</Button>
                 </div>
             </div>
             <div class="flex-col w-full border rounded-xl bg-white shadow-md">
@@ -89,8 +97,8 @@
                         :errors="errors.address"
                     />
                 </div>
-                <div class="flex flex-grow flex-row justify-end front p-6">
-                    <Button @click="saveBillingAddress()" variant="primary">Mentés</Button>
+                <div class="flex flex-grow flex-row justify-end front px-6 pt-20 pb-6">
+                    <Button @click="saveBillingAddress" variant="primary">Mentés</Button>
                 </div>
             </div>
         </div>
@@ -98,7 +106,7 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {ref,onMounted} from "vue";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Button from "@/Components/Button.vue";
 import {router} from "@inertiajs/vue3";
@@ -119,6 +127,7 @@ const shippingForm = ref({
     zip: '',
     city: '',
     address: '',
+    same_address: '',
 });
 
 const billingForm = ref({
@@ -128,4 +137,28 @@ const billingForm = ref({
     address: '',
 });
 
+const saveShippingAddress = () => {
+    router.post(route('account.shipping-addresses.save'), shippingForm.value);
+};
+
+const saveBillingAddress = () => {
+    router.post(route('account.billing-addresses.save'), billingForm.value);
+};
+
+onMounted(() => {
+    if (props.shippingAddress) {
+        shippingForm.value = {
+            ...shippingForm.value,
+            ...props.shippingAddress,
+            same_address: props.shippingAddress.same_address ?? false,
+        };
+    }
+
+    if (props.billingAddress) {
+        billingForm.value = {
+            ...billingForm.value,
+            ...props.billingAddress,
+        };
+    }
+});
 </script>

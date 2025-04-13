@@ -6,6 +6,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -19,6 +21,9 @@ class HomeController extends Controller
             'foodProducts' => $foodProducts,
             'toyProducts' => $toyProducts,
             'accessoryProducts' => $accessoryProducts,
+            'layout' => auth()->check() ? 'AuthenticatedLayout' : 'GuestLayout',
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
         ]);
     }
 

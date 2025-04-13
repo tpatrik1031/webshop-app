@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Services\CartService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,13 @@ use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller
 {
+    protected $cartService;
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
     /**
      * Display the login view.
      */
@@ -32,6 +40,9 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        // Kosár tartalmának átvitele a bejelentkezett felhasználóhoz
+        $this->cartService->transferCartItemsToUser(Auth::id());
 
         return redirect()->intended(route('home.index', absolute: false));
     }

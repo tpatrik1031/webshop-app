@@ -23,9 +23,10 @@ class ShippingRequest extends FormRequest
     {
         return [
             'country' => ['required', 'string', 'max:255'],
-            'zip' => ['required', 'integer', 'max:255'],
+            'zip' => ['required'],
             'city' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string', 'max:255'],
+            'same_address' => ['nullable'],
         ];
     }
 }

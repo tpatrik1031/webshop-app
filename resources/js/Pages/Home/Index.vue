@@ -1,7 +1,6 @@
 <template>
-    <AuthenticatedLayout>
+    <component :is="layoutComponent">
         <div class="bg-gray-200 min-h-screen">
-            <!-- Hero Section -->
             <div class="w-full h-[750px]">
                 <img
                     src="/hero-img.png"
@@ -10,8 +9,7 @@
                 />
             </div>
 
-            <!-- Szöveg -->
-            <div class="flex text-center gap-6 justify-center my-8">
+            <div class="flex flex-col md:flex-row text-center gap-6 justify-center my-8 mx-2">
                 <div class="border rounded-full bg-cyan-500 text-white px-8 py-2 font-semibold text-xl cursor-pointer hover:bg-cyan-400 shadow-md">
                     Rólunk
                 </div>
@@ -22,15 +20,14 @@
                     Segítség
                 </div>
             </div>
-
-            <!-- Termékek -->
+            
             <div class="max-w-6xl mx-auto py-12 space-y-12">
                 <div>
-                    <h1 class="text-3xl font-bold text-cyan-500">
+                    <h1 class="text-3xl font-bold text-cyan-500 p-2 md:p-0">
                         Kutyaeledelek
                     </h1>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-12 cursor-pointer p-4">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-12 cursor-pointer p-4">
                     <div
                         v-for="product in foodProducts"
                         :key="product.id"
@@ -43,11 +40,11 @@
                     </div>
                 </div>
                 <div>
-                    <h1 class="text-3xl font-bold text-cyan-500">
+                    <h1 class="text-3xl font-bold text-cyan-500 p-2 md:p-0">
                         Játékok
                     </h1>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-12 cursor-pointer p-4">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-12 cursor-pointer p-4">
                     <div
                         v-for="product in toyProducts"
                         :key="product.id"
@@ -60,11 +57,11 @@
                     </div>
                 </div>
                 <div>
-                    <h1 class="text-3xl font-bold text-cyan-500">
+                    <h1 class="text-3xl font-bold text-cyan-500 p-2 md:p-0">
                         Kiegészítők
                     </h1>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-12 cursor-pointer p-4">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-12 cursor-pointer p-4">
                     <div
                         v-for="product in accessoryProducts"
                         :key="product.id"
@@ -98,18 +95,32 @@
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </component>
 </template>
 
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { computed } from 'vue';
+import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     foodProducts: Array,
     toyProducts: Array,
     accessoryProducts: Array,
+    layout: Object,
+    canLogin: {
+        type: Boolean,
+    },
+    canRegister: {
+        type: Boolean,
+    },
+    auth: Object,
 })
+
+const layoutComponent = computed(() => {
+    return props.auth?.user ? AuthenticatedLayout : GuestLayout;
+});
 
 const showProductDetail = (id) => {
     router.visit(route('shop.product.show', id));
