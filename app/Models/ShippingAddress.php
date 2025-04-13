@@ -15,5 +15,6 @@ class ShippingAddress extends Model
         'zip',
         'city',
         'address',
+        'same_address'
     ];
 }

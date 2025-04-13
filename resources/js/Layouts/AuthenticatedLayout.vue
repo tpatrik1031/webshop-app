@@ -9,6 +9,7 @@ import { Link } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3'
 import Footer from '@/Components/Footer.vue';
 
+const cartQuantity = usePage().props.cartQuantity;
 const user = usePage().props.auth.user;
 const showingNavigationDropdown = ref(false);
 </script>
@@ -19,10 +20,8 @@ const showingNavigationDropdown = ref(false);
             <nav
                 class="bg-neutral-200"
             >
-                <!-- Primary Navigation Menu -->
                 <div class="px-4 sm:px-6 lg:px-12">
                     <div class="flex h-16 justify-between">
-                        <!-- Logo (left) -->
                         <div class="flex shrink-0 items-center">
                             <Link :href="route('home.index')">
                                 <h1 class="text-cyan-500 text-xl md:text-3xl font-extrabold mt-1 md:mt-0">
@@ -31,8 +30,7 @@ const showingNavigationDropdown = ref(false);
                             </Link>
                         </div>
 
-                        <!-- Navigation Links (center) -->
-                        <div class="hidden sm:flex justify-center flex-1">
+                        <div class="hidden sm:flex justify-center flex-1 -mr-8">
                             <div class="flex space-x-8">
                                 <NavLink
                                     :href="route('home.index')"
@@ -82,9 +80,27 @@ const showingNavigationDropdown = ref(false);
                             </div>
                         </div>
 
-                        <!-- User Profile (right) -->
                         <div class="hidden sm:flex sm:items-center">
-                            <!-- Settings Dropdown -->
+                            <div class="relative cursor-pointer pr-6">
+                                <Link :href="route('cart.index')">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.5"
+                                        stroke="currentColor"
+                                        class="w-6 h-6 text-gray-700 hover:text-cyan-600 transition-colors duration-200">
+                                        <path stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                    </svg>
+
+                                    <span v-if="cartQuantity > 0"
+                                        class="absolute -bottom-2 left-4 bg-cyan-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full shadow-md">
+                                        {{ cartQuantity }}
+                                    </span>
+                                </Link>
+                            </div>
+
                             <div class="relative">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
@@ -139,7 +155,6 @@ const showingNavigationDropdown = ref(false);
                             </div>
                         </div>
 
-                        <!-- Hamburger -->
                         <div class="flex items-center sm:hidden">
                             <button
                                 @click="
@@ -182,7 +197,6 @@ const showingNavigationDropdown = ref(false);
                     </div>
                 </div>
 
-                <!-- Responsive Navigation Menu -->
                 <div
                     :class="{
                         block: showingNavigationDropdown,
@@ -253,7 +267,6 @@ const showingNavigationDropdown = ref(false);
                 </div>
             </nav>
 
-            <!-- Page Content -->
             <main class="flex-grow">
                 <slot />
             </main>

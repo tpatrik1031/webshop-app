@@ -1,6 +1,6 @@
 <template>
-    <AuthenticatedLayout>
-        <div class="max-w-6xl mx-auto py-12 px-4">
+    <component :is="layoutComponent">
+        <div class="max-w-6xl mx-auto py-12 px-4 mt-12">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-32 items-start">
                 <div>
                     <img
@@ -21,6 +21,7 @@
 
                     <div class="flex space-x-4 pt-4">
                         <button
+                            @click="handleAddToCart"
                             class="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 px-4 rounded-lg shadow"
                         >
                             Kosárba
@@ -34,13 +35,31 @@
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </component>
 </template>
 
 <script setup>
+import { computed } from 'vue';
+import { router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import GuestLayout from '@/Layouts/GuestLayout.vue';
+import { ref } from 'vue';
+import axios from 'axios';
+import { useCart } from '@/Composables/useCart';
 
 const props = defineProps({
     product: Object,
+    layout: Object,
+    auth: Object,
 });
+
+const layoutComponent = computed(() => {
+    return props.auth?.user ? AuthenticatedLayout : GuestLayout;
+});
+
+const { addToCart } = useCart(props.auth.user);
+
+function handleAddToCart() {
+    addToCart(props.product, 1);
+}
 </script>

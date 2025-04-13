@@ -1,5 +1,5 @@
 <template>
-    <AuthenticatedLayout>
+    <component :is="layoutComponent">
         <div class="flex space-x-2 bg-cyan-600 p-2 items-center justify-center">
             <div @click="resetCategory"
                  class="cursor-pointer px-4 py-2 rounded"
@@ -48,18 +48,21 @@
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </component>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref,computed } from 'vue';
 import { router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import GuestLayout from '@/Layouts/GuestLayout.vue';
 
 const props = defineProps({
     products: Array,
     categories: Array,
     selectedCategory: String,
+    layout: Object,
+    auth: Object,
 });
 
 const chooseCategory = (categoryName) => {
@@ -77,4 +80,8 @@ const resetCategory = () => {
         only: ['products', 'selectedCategory'],
     });
 };
+
+const layoutComponent = computed(() => {
+    return props.auth?.user ? AuthenticatedLayout : GuestLayout;
+});
 </script>

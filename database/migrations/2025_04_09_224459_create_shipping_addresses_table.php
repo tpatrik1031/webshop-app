@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('country');
             $table->string('zip');
             $table->string('city');
+            $table->string('same_address')->nullable();
             $table->string('address');
             $table->timestamps();
         });

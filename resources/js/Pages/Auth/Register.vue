@@ -7,7 +7,10 @@ import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
-    name: '',
+    user_name: '',
+    first_name: '',
+    last_name: '',
+    phone: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -24,21 +27,71 @@ const submit = () => {
     <GuestLayout>
         <Head title="Register" />
 
-        <form @submit.prevent="submit">
+        <div class="flex justify-center items-center my-16 pt-8">
+            <div class="flex justify-center items-center border border-cyan-500 rounded-xl p-8 min-w-screen bg-white shadow-md">
+                <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name" value="Felhasználónév" />
 
                 <TextInput
                     id="name"
                     type="text"
                     class="mt-1 block w-full"
-                    v-model="form.name"
+                    v-model="form.user_name"
                     required
                     autofocus
                     autocomplete="name"
                 />
 
-                <InputError class="mt-2" :message="form.errors.name" />
+                <InputError class="mt-2" :message="form.errors.user_name" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="name" value="Keresztnév" />
+
+                <TextInput
+                    id="name"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.first_name"
+                    required
+                    autofocus
+                    autocomplete="name"
+                />
+
+                <InputError class="mt-2" :message="form.errors.user_name" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="name" value="Család név" />
+
+                <TextInput
+                    id="name"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.last_name"
+                    required
+                    autofocus
+                    autocomplete="name"
+                />
+
+                <InputError class="mt-2" :message="form.errors.user_name" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="name" value="Telefon" />
+
+                <TextInput
+                    id="name"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.phone"
+                    required
+                    autofocus
+                    autocomplete="name"
+                />
+
+                <InputError class="mt-2" :message="form.errors.user_name" />
             </div>
 
             <div class="mt-4">
@@ -57,7 +110,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" value="Jelszó" />
 
                 <TextInput
                     id="password"
@@ -74,7 +127,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel
                     for="password_confirmation"
-                    value="Confirm Password"
+                    value="Jelszó megerősítése"
                 />
 
                 <TextInput
@@ -97,7 +150,7 @@ const submit = () => {
                     :href="route('login')"
                     class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
                 >
-                    Already registered?
+                    Már regisztált korábban?
                 </Link>
 
                 <PrimaryButton
@@ -105,9 +158,11 @@ const submit = () => {
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Register
+                    Regisztráció
                 </PrimaryButton>
             </div>
         </form>
+            </div>
+        </div>
     </GuestLayout>
 </template>

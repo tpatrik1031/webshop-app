@@ -7,6 +7,8 @@ use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 class ShopController extends Controller
 {
@@ -45,6 +47,9 @@ class ShopController extends Controller
             }),
             'categories' => $categories,
             'selectedCategory' => $selectedCategory,
+            'layout' => auth()->check() ? 'AuthenticatedLayout' : 'GuestLayout',
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
         ]);
     }
 
@@ -83,6 +88,9 @@ class ShopController extends Controller
             }),
             'categories' => $categories,
             'selectedCategory' => $selectedCategory,
+            'layout' => auth()->check() ? 'AuthenticatedLayout' : 'GuestLayout',
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
         ]);
     }
 
@@ -121,6 +129,9 @@ class ShopController extends Controller
             }),
             'categories' => $categories,
             'selectedCategory' => $selectedCategory,
+            'layout' => auth()->check() ? 'AuthenticatedLayout' : 'GuestLayout',
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
         ]);
     }
 
@@ -143,6 +154,9 @@ class ShopController extends Controller
                     ];
                 }),
             ],
+            'layout' => auth()->check() ? 'AuthenticatedLayout' : 'GuestLayout',
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
         ]);
     }
 }
