@@ -30,19 +30,16 @@
                         Kutyaeledelek
                     </h1>
                 </div>
-                <div v-for="product in foodProducts" :key="product.id" class="grid grid-cols-3 gap-6 cursor-pointer">
-                    <div>
-                        <div class="h-48 border-2 border-gray-400 bg-white rounded-lg">
-                            <img :src="product.media[0]?.original_url" alt="" class="h-full w-full" />
-                        </div>
-                        <div class="flex justify-between mt-4">
-                            <p class="font-bold">
-                                {{ product.title }}
-                            </p>
-                            <p class="font-bold">
-                                {{ product.price }} HUF
-                            </p>
-                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-12 cursor-pointer p-4">
+                    <div
+                        v-for="product in foodProducts"
+                        :key="product.id"
+                        @click="showProductDetail(product.id)"
+                        class="h-48 border-2 border-gray-400 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow relative my-2 md:my-0"
+                    >
+                        <img :src="product.media[0]?.original_url" alt="" class="h-full w-full pb-8" />
+                        <p class="absolute bottom-2 left-2 font-medium text-sm">{{ product.title }}</p>
+                        <p class="absolute bottom-2 right-2 font-semibold text-sm">{{ product.price }} HUF</p>
                     </div>
                 </div>
                 <div>
@@ -50,19 +47,16 @@
                         Játékok
                     </h1>
                 </div>
-                <div v-for="product in toyProducts" :key="product.id" class="grid grid-cols-3 gap-6 cursor-pointer">
-                    <div>
-                        <div class="h-48 border-2 border-gray-400 bg-white rounded-lg">
-                            <img :src="product.media[0]?.original_url" alt="" class="h-full w-full" />
-                        </div>
-                        <div class="flex justify-between mt-4">
-                            <p class="font-bold">
-                                {{ product.title }}
-                            </p>
-                            <p class="font-bold">
-                                {{ product.price }} HUF
-                            </p>
-                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-12 cursor-pointer p-4">
+                    <div
+                        v-for="product in toyProducts"
+                        :key="product.id"
+                        @click="showProductDetail(product.id)"
+                        class="h-48 border-2 border-gray-400 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow relative my-2 md:my-0"
+                    >
+                        <img :src="product.media[0]?.original_url" alt="" class="h-full w-full pb-8" />
+                        <p class="absolute bottom-2 left-2 font-medium text-sm">{{ product.title }}</p>
+                        <p class="absolute bottom-2 right-2 font-semibold text-sm">{{ product.price }} HUF</p>
                     </div>
                 </div>
                 <div>
@@ -70,19 +64,16 @@
                         Kiegészítők
                     </h1>
                 </div>
-                <div v-for="product in accessoryProducts" :key="product.id" class="grid grid-cols-3 gap-6 cursor-pointer">
-                    <div>
-                        <div class="h-48 border-2 border-gray-400 bg-white rounded-lg">
-                            <img :src="product.media[0]?.original_url" alt="" class="h-full w-full" />
-                        </div>
-                        <div class="flex justify-between mt-4">
-                            <p class="font-bold">
-                                {{ product.title }}
-                            </p>
-                            <p class="font-bold">
-                                {{ product.price }} HUF
-                            </p>
-                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-12 cursor-pointer p-4">
+                    <div
+                        v-for="product in accessoryProducts"
+                        :key="product.id"
+                        @click="showProductDetail(product.id)"
+                        class="h-48 border-2 border-gray-400 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow relative my-2 md:my-0"
+                    >
+                        <img :src="product.media[0]?.original_url" alt="" class="h-full w-full pb-8" />
+                        <p class="absolute bottom-2 left-2 font-medium text-sm">{{ product.title }}</p>
+                        <p class="absolute bottom-2 right-2 font-semibold text-sm">{{ product.price }} HUF</p>
                     </div>
                 </div>
             </div>
@@ -112,10 +103,15 @@
 
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     foodProducts: Array,
     toyProducts: Array,
     accessoryProducts: Array,
 })
+
+const showProductDetail = (id) => {
+    router.visit(route('shop.product.show', id));
+};
 </script>

@@ -14,36 +14,135 @@ class ShopController extends Controller
     {
         $selectedCategory = $request->query('category');
 
-        // Ha van kategória választás, akkor csak a hozzá tartozó termékek
         if ($selectedCategory) {
             $category = ProductCategory::where('name', $selectedCategory)->first();
             if ($category) {
-                $products = $category->products; // Használjuk a products kapcsolatot
+                $products = $category->products()->where('type', 'food')->get();
             } else {
-                $products = collect(); // Ha nincs ilyen kategória, üres kollekció
+                $products = collect();
             }
         } else {
-            // Ha nincs kategória választás, akkor az összes "food" típusú termék
             $products = Product::where('type', 'food')->get();
         }
 
-        // Kategóriák listája a kategóriák választásához
-        $categories = ProductCategory::all();
+        $products->load('media');
+
+        $categories = ProductCategory::where('type', 'food')->get();
 
         return Inertia::render('Shop/Food/Index', [
-            'products' => $products,
+            'products' => $products->map(function ($product) {
+                return [
+                    'id' => $product->id,
+                    'title' => $product->title,
+                    'price' => $product->price,
+                    'media' => $product->getMedia('images')->map(function ($media) {
+                        return [
+                            'id' => $media->id,
+                            'url' => $media->getUrl(),
+                        ];
+                    }),
+                ];
+            }),
             'categories' => $categories,
             'selectedCategory' => $selectedCategory,
         ]);
     }
 
-    public function toy(): Response
+    public function toy(Request $request): Response
     {
-        return Inertia::render('Shop/Toy/Index');
+        $selectedCategory = $request->query('category');
+
+        if ($selectedCategory) {
+            $category = ProductCategory::where('name', $selectedCategory)->first();
+            if ($category) {
+                $products = $category->products()->where('type', 'toy')->get();
+            } else {
+                $products = collect();
+            }
+        } else {
+            $products = Product::where('type', 'toy')->get();
+        }
+
+        $products->load('media');
+
+        $categories = ProductCategory::where('type', 'toy')->get();
+
+        return Inertia::render('Shop/Toy/Index', [
+            'products' => $products->map(function ($product) {
+                return [
+                    'id' => $product->id,
+                    'title' => $product->title,
+                    'price' => $product->price,
+                    'media' => $product->getMedia('images')->map(function ($media) {
+                        return [
+                            'id' => $media->id,
+                            'url' => $media->getUrl(),
+                        ];
+                    }),
+                ];
+            }),
+            'categories' => $categories,
+            'selectedCategory' => $selectedCategory,
+        ]);
     }
 
-    public function accessories(): Response
+    public function accessories(Request $request): Response
     {
-        return Inertia::render('Shop/Accessories/Index');
+        $selectedCategory = $request->query('category');
+
+        if ($selectedCategory) {
+            $category = ProductCategory::where('name', $selectedCategory)->first();
+            if ($category) {
+                $products = $category->products()->where('type', 'accessories')->get();
+            } else {
+                $products = collect();
+            }
+        } else {
+            $products = Product::where('type', 'accessories')->get();
+        }
+
+        $products->load('media');
+
+        $categories = ProductCategory::where('type', 'accessories')->get();
+
+        return Inertia::render('Shop/Accessories/Index', [
+            'products' => $products->map(function ($product) {
+                return [
+                    'id' => $product->id,
+                    'title' => $product->title,
+                    'price' => $product->price,
+                    'media' => $product->getMedia('images')->map(function ($media) {
+                        return [
+                            'id' => $media->id,
+                            'url' => $media->getUrl(),
+                        ];
+                    }),
+                ];
+            }),
+            'categories' => $categories,
+            'selectedCategory' => $selectedCategory,
+        ]);
+    }
+
+    public function showProductDetail($id): Response
+    {
+        $product = Product::findOrFail($id);
+
+        $product->load('media');
+
+        return Inertia::render('Shop/Detail/Show', [
+            'product' => [
+                'id' => $product->id,
+                'title' => $product->title,
+                'description' => $product->description,
+                'price' => $product->price,
+                'media' => $product->getMedia('images')->map(function ($media) {
+                    return [
+                        'id' => $media->id,
+                        'url' => $media->getUrl(),
+                    ];
+                }),
+            ],
+        ]);
     }
 }
