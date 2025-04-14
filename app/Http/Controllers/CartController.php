@@ -16,7 +16,6 @@ class CartController extends Controller
         $this->cartService = $cartService;
     }
 
-    // Kosár oldal megjelenítése
     public function index()
     {
         list($products, $cartItems) = $this->cartService->getProductsAndCartItems();
@@ -30,7 +29,7 @@ class CartController extends Controller
                 'title' => $product->title,
                 'price' => $product->price,
                 'quantity' => $quantity,
-                'image' => $product->getFirstMediaUrl('images'), // Alapértelmezett collection
+                'image' => $product->getFirstMediaUrl('images'),
             ];
         });
 
@@ -46,7 +45,6 @@ class CartController extends Controller
         ]);
     }
 
-    // Kosárba tétel hozzáadása
     public function add(Request $request)
     {
         $request->validate([
@@ -59,7 +57,6 @@ class CartController extends Controller
         return response()->json(['status' => 'success']);
     }
 
-    // Kosárból tétel eltávolítása
     public function remove(Request $request)
     {
         $request->validate([
@@ -71,7 +68,6 @@ class CartController extends Controller
         return response()->json(['status' => 'removed']);
     }
 
-    // Kosár mennyiség frissítése
     public function updateQuantity(Request $request)
     {
         $request->validate([

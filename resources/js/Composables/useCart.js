@@ -46,12 +46,10 @@ export function useCart(user) {
         }
     };
 
-    // Automatikusan betölti a kosarat, amikor a komponens betöltődik
     onMounted(() => {
         loadCart();
     });
-
-    // Figyelje a felhasználói státusz változását, és töltse újra a kosarat, ha változik
+    
     if (user) {
         watch(() => user.value, (newUser) => {
             if (newUser) {

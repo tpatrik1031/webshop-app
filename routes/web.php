@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
@@ -47,6 +48,18 @@ Route::middleware('auth')->group(function () {
         ->name('products.update');
     Route::delete('/products/{product}/delete', [ProductController::class, 'delete'])
         ->name('products.delete');
+
+    // Products Category
+    Route::get('/product-categories/list', [ProductCategoryController::class, 'list'])
+        ->name('product-categories.list');
+    Route::post('/product-categories/{id}', [ProductCategoryController::class, 'requestedCategory'])
+        ->name('product-categories.show');
+    Route::put('/product-categories/edit/{productCategory}', [ProductCategoryController::class, 'update'])
+        ->name('product-categories.edit');
+    Route::post('/product-categories', [ProductCategoryController::class, 'store'])
+        ->name('product-categories.store');
+     Route::delete('/product-categories/{productCategory}/delete', [ProductCategoryController::class, 'delete'])
+        ->name('product-categories.delete');
 
     // Orders
     Route::get('/orders/list', [OrderController::class, 'index'])
