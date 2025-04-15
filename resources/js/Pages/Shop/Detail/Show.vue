@@ -27,6 +27,7 @@
                             Kosárba
                         </button>
                         <button
+                            @click="buyThisItem()"
                             class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow"
                         >
                             Vásárlás
@@ -61,5 +62,10 @@ const { addToCart } = useCart(props.auth.user);
 
 function handleAddToCart() {
     addToCart(props.product, 1);
+}
+
+function buyThisItem() {
+    addToCart(props.product, 1);
+    router.get(route('orders.create'));
 }
 </script>

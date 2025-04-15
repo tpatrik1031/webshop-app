@@ -21,11 +21,11 @@
                                 <div class="space-x-2">
                                     <button @click="updateQuantity(item.id, item.quantity - 1)"
                                             :disabled="item.quantity <= 1"
-                                            class="px-4 py-2 text-white bg-yellow-500 hover:bg-yellow-600 rounded-lg">
+                                            class="px-4 py-2 text-cyan-500 bg-white hover:bg-cyan-600 hover:text-white border border-cyan-500 rounded-lg">
                                         -
                                     </button>
                                     <button @click="updateQuantity(item.id, item.quantity + 1)"
-                                            class="px-4 py-2 text-white bg-green-500 hover:bg-green-600 rounded-lg">
+                                            class="px-4 py-2 text-white bg-cyan-500 hover:bg-cyan-600 rounded-lg">
                                         +
                                     </button>
                                     <button @click="removeFromCart(item.id)"
@@ -43,7 +43,7 @@
                             <span>{{ total }} Ft</span>
                         </div>
                         <div v-if="auth.user" class="mt-4 flex justify-end items-center">
-                            <button class="w-min py-2 text-white bg-cyan-600 hover:bg-cyan-700 rounded-lg px-4">
+                            <button @click="orderFinish()" class="w-min py-2 text-white bg-cyan-600 hover:bg-cyan-700 rounded-lg px-4">
                                 Vásárlás
                             </button>
                         </div>
@@ -97,6 +97,10 @@ const removeFromCart = (productId) => {
         .catch(error => {
             console.error(error);
         });
+};
+
+const orderFinish = () => {
+    router.get(route('orders.create'));
 };
 
 const totalQuantity = computed(() => {

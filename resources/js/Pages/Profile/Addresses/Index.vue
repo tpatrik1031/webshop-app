@@ -59,7 +59,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="flex flex-grow flex-row justify-end front p-6">
+                <div class="flex flex-grow flex-row justify-end front pt-6 px-6 mt-14">
                     <Button @click="saveShippingAddress" variant="primary">Mentés</Button>
                 </div>
             </div>

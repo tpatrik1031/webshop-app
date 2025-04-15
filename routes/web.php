@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
     // Users
     Route::get('/users/list', [UserController::class, 'index'])
         ->name('users.index');
-    Route::put('/users/{user}/update', [UserController::class, 'update'])
+    Route::put('/users/{user}/update', [UserController::class, 'updateStatus'])
         ->name('users.update');
     Route::delete('/users/{user}/delete', [UserController::class, 'delete'])
         ->name('users.delete');
@@ -68,6 +68,11 @@ Route::middleware('auth')->group(function () {
         ->name('orders.update');
     Route::delete('/orders/{order}/delete', [OrderController::class, 'delete'])
         ->name('orders.delete');
+
+    Route::get('/orders/create', [OrderController::class, 'create'])
+        ->name('orders.create');
+    Route::post('/orders/finish', [OrderController::class, 'finalizeCart'])
+        ->name('orders.finish');
 });
 
 // Home

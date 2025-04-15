@@ -7,11 +7,12 @@
                 </div>
             </template>
             <template #content>
-                <div>
+                <div class="max-h-[50vh]">
+                    <h1 class="py-2 mx-4">Válassz kategóriát a meglévő szerkesztéséhez</h1>
                     <select
                         v-model="selectedCategoryId"
                         @change="loadCategoryDetails(selectedCategoryId)"
-                        class="w-full pb-4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="w-full flex pb-4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="" disabled selected>Válassz kategóriát...</option>
                         <option v-for="category in productCategories" key:category.id :value="category.id">{{ category.name }}</option>

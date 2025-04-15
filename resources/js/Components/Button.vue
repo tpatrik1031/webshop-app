@@ -10,7 +10,7 @@
                 'px-6 py-3': size === 'lg',
                 'px-4 py-2': size === 'md',
                 'px-2.5 py-1.5': size === 'sm',
-                'text-white border-cyan-600 bg-cyan-500 hover:bg-blue-500 hover:border-blue-500': variant === 'primary',
+                'text-white border-cyan-600 bg-cyan-500 hover:bg-cyan-600 hover:border-cyan-500': variant === 'primary',
                 '!text-blue-500 border-blue-500 bg-white hover:bg-blue-500 hover:!text-white': variant === 'secondary',
                 '!rounded-full !text-blue-500 border-blue-500 bg-white hover:bg-blue-500 hover:!text-white': variant === 'thirdly',
                 '!rounded-full bg-white !text-[#3A36DB] hover:bg-[#F8F9FC] active:bg-[#F1F3F9]': variant === 'fourthly',

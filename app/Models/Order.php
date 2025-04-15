@@ -14,10 +14,21 @@ class Order extends Model
         'status',
         'total_price',
         'created_by',
+        'updated_by',
     ];
 
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function detail()
+    {
+        return $this->hasOne(OrderDetail::class);
+    }
+
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }
