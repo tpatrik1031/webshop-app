@@ -24,12 +24,6 @@
                     </h1>
                 </div>
 
-                <div v-if="selectedCategory">
-                    <h2 class="text-3xl font-bold text-cyan-500 text-center">
-                        {{ selectedCategory }}
-                    </h2>
-                </div>
-
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-12 cursor-pointer p-4">
                     <div
                         v-for="product in products"

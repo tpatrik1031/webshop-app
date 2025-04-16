@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use ProtoneMedia\LaravelQueryBuilderInertiaJs\InertiaTable;
@@ -17,7 +18,7 @@ class ProductController extends Controller
         InertiaTable::updateQueryBuilderParameters('products');
 
         $products = QueryBuilder::for(Product::class)
-            ->with('createdBy')
+            ->with(['createdBy', 'media'])
             ->defaultSort('-created_at')
             ->allowedSorts([
                 'id',
@@ -29,15 +30,20 @@ class ProductController extends Controller
             )
             ->withQueryString();
 
+        $productCategory = ProductCategory::get();
+        $productCategory = $productCategory->isEmpty() ? null : $productCategory;
+
         return Inertia::render('Products/Index',
             [
                 'products' => $products,
+                'productCategory' => $productCategory,
             ])->table(function (InertiaTable $table) {
             $table
                 ->name('products')
                 ->perPageOptions([2, 10, 20])
                 ->defaultSort('-created_at')
                 ->column(key: 'id', label: 'ID', canBeHidden: false, sortable: true)
+                ->column(key: 'image', label: 'Kép', canBeHidden: false, sortable: false)
                 ->column(key: 'title', label: 'Név', canBeHidden: false, sortable: true)
                 ->column(key: 'price', label: 'Ár', canBeHidden: false, sortable: true)
                 ->column(key: 'actions', canBeHidden: false, sortable: false)
@@ -59,6 +65,7 @@ class ProductController extends Controller
             'description' => $data['description'],
             'price' => $data['price'],
             'type' => $data['type'],
+            'category_id' => $data['category'],
             'created_by' => Auth::id(),
         ]);
 
@@ -83,6 +90,7 @@ class ProductController extends Controller
             'description' => $requestData['description'],
             'price' => $requestData['price'],
             'type' => $requestData['type'],
+            'category' => $requestData['category'],
             'updated_by' => Auth::id(),
         ]);
 

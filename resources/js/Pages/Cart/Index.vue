@@ -1,5 +1,20 @@
 <template>
     <component :is="layoutComponent" :cartQuantity="totalQuantity">
+
+        <Notification
+            v-if="showNotification"
+            :message="notificationMessage"
+            :type="notificationType"
+            @close="showNotification = false"
+         />
+
+        <ItemNotification
+            v-if="showNotification"
+            :message="notificationMessage"
+            :type="notificationType"
+            @close="showNotification = false"
+        />
+
         <div class="bg-gray-200 min-h-screen py-12 px-4">
             <div class="max-w-6xl mx-auto space-y-8">
                 <h1 class="text-4xl font-bold text-cyan-600">Kosár</h1>
@@ -19,12 +34,12 @@
                                     <div class="text-sm text-gray-500">Mennyiség: {{ item.quantity }}</div>
                                 </div>
                                 <div class="space-x-2">
-                                    <button @click="updateQuantity(item.id, item.quantity - 1)"
+                                    <button @click="updateQuantity(item.id, item.quantity - 1), showErrorMessage('Eltávolítva')"
                                             :disabled="item.quantity <= 1"
                                             class="px-4 py-2 text-cyan-500 bg-white hover:bg-cyan-600 hover:text-white border border-cyan-500 rounded-lg">
                                         -
                                     </button>
-                                    <button @click="updateQuantity(item.id, item.quantity + 1)"
+                                    <button @click="updateQuantity(item.id, item.quantity + 1), showSuccessMessage('Hozzáadva')"
                                             class="px-4 py-2 text-white bg-cyan-500 hover:bg-cyan-600 rounded-lg">
                                         +
                                     </button>
@@ -65,6 +80,8 @@ import { router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Link } from '@inertiajs/vue3';
+import ItemNotification from '@/Components/ItemAddOrRemoveNotification.vue';
+import Notification from '@/Components/Notification.vue';
 
 const props = defineProps({
     layout: Object,
@@ -73,6 +90,22 @@ const props = defineProps({
     total: Number,
     products: Array,
 });
+
+const showNotification = ref(false);
+const notificationMessage = ref('');
+const notificationType = ref('success');
+
+const showSuccessMessage = (message) => {
+  notificationMessage.value = message;
+  notificationType.value = 'success';
+  showNotification.value = true;
+};
+
+const showErrorMessage = (message) => {
+  notificationMessage.value = message;
+  notificationType.value = 'error';
+  showNotification.value = true;
+};
 
 const layoutComponent = computed(() => {
     return props.auth?.user ? AuthenticatedLayout : GuestLayout;
@@ -93,9 +126,11 @@ const removeFromCart = (productId) => {
     axios.post(route('cart.remove'), { product_id: productId })
         .then(() => {
             router.reload();
+            showSuccessMessage('Sikeresen eltávolítva a kosarából')
         })
         .catch(error => {
             console.error(error);
+            showErrorMessage('Hiba a törlés közben')
         });
 };
 

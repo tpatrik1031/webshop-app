@@ -1,5 +1,13 @@
 <template>
     <AuthenticatedLayout>
+        
+        <Notification
+            v-if="showNotification"
+            :message="notificationMessage"
+            :type="notificationType"
+            @close="showNotification = false"
+            />
+
         <DialogModal :show="productCategoryToCreate !== false" @close="productCategoryToCreate = false" class="p-4">
             <template #title>
                 <div class="pb-2 lg:py-3 border-b border-[#3A36DB]">
@@ -47,6 +55,7 @@
                 </div>
             </template>
         </DialogModal>
+
         <DialogModal :show="productToCreate !== false" @close="productToCreate = false" class="p-4">
             <template #title>
                 <div class="pb-2 lg:py-3 border-b border-[#3A36DB]">
@@ -72,7 +81,7 @@
                     <InputLabel>Típus</InputLabel>
                     <select
                         v-model="form.type"
-                        class="w-full pb-4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="w-full pb-4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                         :class="{ 'border-red-500': errors.type }"
                     >
                         <option value="" disabled selected>Válassz típust...</option>
@@ -80,7 +89,16 @@
                         <option value="toy">Játék</option>
                         <option value="accessories">Kiegészítő</option>
                     </select>
-                    <div v-if="errors.type" class="text-red-500 text-sm">{{ errors.status }}</div>
+                    <InputLabel>Kategória</InputLabel>
+                    <select
+                        v-model="form.category"
+                        class="w-full pb-4 border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    >
+                        <option value="" disabled selected>Válassz kategóriát...</option>
+                        <option v-for="category in props.productCategory" :key="category.id" :value="category.id">
+                            {{ category.name }}
+                        </option>
+                    </select>
                     <div class="pb-4">
                         <InputLabel>Leírás</InputLabel>
                         <FormTextArea
@@ -165,9 +183,19 @@
                 @rowClicked="handleRowClick"
                 class="w-full"
             >
-            <template #cell(id)="{ item }">
+                <template #cell(id)="{ item }">
                     <div class="flex justify-start pl-3">
                         {{ item.id }}
+                    </div>
+                </template>
+
+                <template #cell(image)="{ item }">
+                    <div class="flex justify-start pl-3 -ml-6">
+                        <img
+                            :src="item.media && item.media.length > 0 ? item.media[0]?.original_url : ''"
+                            :alt="item.title"
+                            class="h-16 w-16 object-cover rounded"
+                        >
                     </div>
                 </template>
 
@@ -247,6 +275,7 @@
 
 <script setup>
 import {ref,onMounted,watch  } from "vue";
+import axios from 'axios';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {trans} from "laravel-vue-i18n";
 import Button from "@/Components/Button.vue";
@@ -264,15 +293,31 @@ import TextInput from "@/Components/TextInput.vue";
 import FormTextArea from '@/Components/Custom/FormTextArea.vue';
 import FormNumberInput from '@/Components/Custom/FormNumberInput.vue';
 import FormError from '@/Components/Custom/FormError.vue';
-import axios from 'axios'
+import Notification from '@/Components/Notification.vue';
 
 const props = defineProps({
     products: Object,
+    productCategory: Object,
     errors: Object
-})
+});
 
+const showNotification = ref(false);
+const notificationMessage = ref('');
+const notificationType = ref('success');
 const productCategories = ref([]);
 const selectedCategoryId = ref('');
+
+const showSuccessMessage = (message) => {
+  notificationMessage.value = message;
+  notificationType.value = 'success';
+  showNotification.value = true;
+};
+
+const showErrorMessage = (message) => {
+  notificationMessage.value = message;
+  notificationType.value = 'error';
+  showNotification.value = true;
+};
 
 onMounted(async () => {
   const response = await axios.get('/product-categories/list')
@@ -287,7 +332,7 @@ watch(selectedCategoryId, async (newId) => {
       formCategory.value.name = response.data.name
       formCategory.value.type = response.data.type
     } catch (error) {
-      console.error('Hiba a kategória lekérésekor:', error)
+      console.error('Error fetching the category details:', error)
     }
   } else {
     formCategory.value.name = ''
@@ -316,6 +361,7 @@ const form = ref({
     price: '',
     description: '',
     type: '',
+    category: '',
     image: null,
 });
 
@@ -335,19 +381,24 @@ const toggleCreateModalCategory = (category = false) => {
 };
 
 const toggleCreateModal = (product = false) => {
+    if (props.productCategory === null) {
+        showErrorMessage('Először kategóriát hozzon létre...');
+        return
+    }
     if (product) {
         form.value = { ...product };
     } else {
         form.value = { title: '', price: '', description: '', };
     }
     productToCreate.value = true;
-};
+}
 
 const saveProduct = () => {
     const formData = new FormData();
     formData.append('title', form.value.title);
     formData.append('price', form.value.price);
     formData.append('type', form.value.type);
+    formData.append('category', form.value.category);
     formData.append('description', form.value.description);
 
     if (form.value.image) {
@@ -359,6 +410,11 @@ const saveProduct = () => {
         router.post(route('products.update', { product: form.value.id }), formData, {
             onSuccess: () => {
                 productToCreate.value = false;
+                showSuccessMessage('Sikeresen módosította a terméket');
+            },
+            onError: (errors) => {
+                console.error('Error updating the product:', errors);
+                showErrorMessage('Hiba történt a termék módosítása során');
             },
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -369,6 +425,11 @@ const saveProduct = () => {
         router.post(route('products.store'), formData, {
             onSuccess: () => {
                 productToCreate.value = false;
+                showSuccessMessage('Sikeresen létrehozta a terméket');
+            },
+            onError: (errors) => {
+                console.error('Error creating the product:', errors);
+                showErrorMessage('Hiba történt a termék létrehozása során');
             },
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -378,18 +439,27 @@ const saveProduct = () => {
 };
 
 const saveCategory = () => {
-console.log(formCategory.value.id);
     if (formCategory.value.id) {
         router.put(route('product-categories.edit', { id: formCategory.value.id }), formCategory.value, {
             onSuccess: () => {
                 productCategoryToCreate.value = false;
-            }
+                showSuccessMessage('Sikeresen módosította a kategóriát');
+            },
+            onError: (errors) => {
+                console.error('Error updating the category:', errors);
+                showErrorMessage('Hiba történt a kategória módosítása során');
+            },
         });
     } else {
         router.post(route('product-categories.store'), formCategory.value, {
             onSuccess: () => {
                 productCategoryToCreate.value = false;
-            }
+                showSuccessMessage('Sikeresen létrehozta a kategóriát');
+            },
+            onError: (errors) => {
+                console.error('Error creating the product:', errors);
+                showErrorMessage('Hiba történt a termék létrehozása során');
+            },
         });
     }
 };
@@ -403,10 +473,24 @@ const deleteProduct = () => {
     router.delete(route('products.delete', { product: productToDelete.value }), {
         onSuccess: () => {
             productToDelete.value = false;
-        }
+            showSuccessMessage('Sikeresen törölte a terméket');
+        },
+        onError: (errors) => {
+                console.error('Error deleting the product:', errors);
+                showErrorMessage('Hiba történt a termék törlése során');
+            },
     });
 };
 const deleteCategory = () => {
-   router.delete(route('product-categories.delete', { productCategory: formCategory.value.id }));
+   router.delete(route('product-categories.delete', { productCategory: formCategory.value.id }), {
+    onSuccess: () => {
+            productCategoryToCreate.value = false;
+            showSuccessMessage('Sikeresen törölte a kategóriát');
+        },
+        onError: (errors) => {
+                console.error('Error deleting the product category:', errors);
+                showErrorMessage('Hiba történt a kategória törlése során');
+            },
+    });
 };
 </script>

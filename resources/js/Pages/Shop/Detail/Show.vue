@@ -1,5 +1,13 @@
 <template>
     <component :is="layoutComponent">
+
+        <Notification
+            v-if="showNotification"
+            :message="notificationMessage"
+            :type="notificationType"
+            @close="showNotification = false"
+            />
+
         <div class="max-w-6xl mx-auto py-12 px-4 mt-12">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-32 items-start">
                 <div>
@@ -47,12 +55,29 @@ import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { ref } from 'vue';
 import axios from 'axios';
 import { useCart } from '@/Composables/useCart';
+import Notification from '@/Components/ItemAddOrRemoveNotification.vue';
 
 const props = defineProps({
     product: Object,
     layout: Object,
     auth: Object,
 });
+
+const showNotification = ref(false);
+const notificationMessage = ref('');
+const notificationType = ref('success');
+
+const showSuccessMessage = (message) => {
+  notificationMessage.value = message;
+  notificationType.value = 'success';
+  showNotification.value = true;
+};
+
+const showErrorMessage = (message) => {
+  notificationMessage.value = message;
+  notificationType.value = 'error';
+  showNotification.value = true;
+};
 
 const layoutComponent = computed(() => {
     return props.auth?.user ? AuthenticatedLayout : GuestLayout;
@@ -62,6 +87,7 @@ const { addToCart } = useCart(props.auth.user);
 
 function handleAddToCart() {
     addToCart(props.product, 1);
+    showSuccessMessage('Hozzáadta kosarához')
 }
 
 function buyThisItem() {
