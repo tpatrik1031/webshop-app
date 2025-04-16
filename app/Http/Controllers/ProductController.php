@@ -90,7 +90,7 @@ class ProductController extends Controller
             'description' => $requestData['description'],
             'price' => $requestData['price'],
             'type' => $requestData['type'],
-            'category' => $requestData['category'],
+            'category_id' => $requestData['category'],
             'updated_by' => Auth::id(),
         ]);
 

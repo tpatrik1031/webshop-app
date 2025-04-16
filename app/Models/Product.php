@@ -19,7 +19,7 @@ class Product extends Model implements HasMedia
         'description',
         'price',
         'type',
-        'category',
+        'category_id',
         'created_by',
         'updated_by',
         'deleted_by',

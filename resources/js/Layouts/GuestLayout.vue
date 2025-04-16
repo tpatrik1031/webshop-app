@@ -78,7 +78,7 @@ const showingNavigationDropdown = ref(false);
                                     </span>
                                 </Link>
                             </div>
-                            <div class="border rounded-full bg-white px-4 py-1 border-cyan-500 hover:bg-cyan-500 hover:text-white cursor-pointer focus:bg-cyan-400">
+                            <div class="border rounded-full text-cyan-500 bg-white px-4 py-1 border-cyan-500 hover:bg-cyan-500 hover:text-white cursor-pointer focus:bg-cyan-400">
                                 <Link :href="route('login')">
                                     Bejelentkezés
                                 </Link>

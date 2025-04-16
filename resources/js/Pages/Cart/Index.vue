@@ -39,7 +39,7 @@
                                             class="px-4 py-2 text-cyan-500 bg-white hover:bg-cyan-600 hover:text-white border border-cyan-500 rounded-lg">
                                         -
                                     </button>
-                                    <button @click="updateQuantity(item.id, item.quantity + 1), showSuccessMessage('Hozzáadva')"
+                                    <button @click="updateQuantity(item.id, item.quantity + 1), showSuccessMessage('Hozzáadta kosarához')"
                                             class="px-4 py-2 text-white bg-cyan-500 hover:bg-cyan-600 rounded-lg">
                                         +
                                     </button>

@@ -1,6 +1,14 @@
 <template>
     <component :is="layoutComponent">
-        <div class="bg-gray-200 min-h-screen">
+
+        <Notification
+            v-if="showNotification"
+            :message="notificationMessage"
+            :type="notificationType"
+            @close="showNotification = false"
+        />
+
+        <div class="bg-gray-100 min-h-screen">
             <div class="w-full h-[750px]">
                 <img
                     src="/hero-img.png"
@@ -9,40 +17,70 @@
                 />
             </div>
 
-            <div class="flex flex-col md:flex-row text-center gap-6 justify-center my-8 mx-2">
+            <div class="flex flex-col md:flex-row text-center gap-6 justify-center mb-6 mt-12 mx-2">
                 <div class="border rounded-full bg-cyan-500 text-white px-8 py-2 font-semibold text-xl cursor-pointer hover:bg-cyan-400 shadow-md">
                     Rólunk
                 </div>
-                <div class="border rounded-full bg-white text-cyan-500 px-8 py-2 font-semibold text-xl cursor-pointer hover:bg-gray-100 shadow-md">
+                <div class="border border-cyan-500 rounded-full bg-white text-cyan-500 px-8 py-2 font-semibold text-xl cursor-pointer hover:bg-cyan-500 hover:text-white shadow-md">
                     Kapcsolat
                 </div>
                 <div class="border rounded-full bg-cyan-500 text-white px-8 py-2 font-semibold text-xl cursor-pointer hover:bg-cyan-400 shadow-md">
                     Segítség
                 </div>
             </div>
-            
+
             <div class="max-w-6xl mx-auto py-12 space-y-12">
-                <div>
-                    <h1 class="text-3xl font-bold text-cyan-500 p-2 md:p-0">
+                <div class="flex items-center justify-center gap-4 max-w-6xl mx-auto px-2">
+                    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-cyan-500 to-cyan-500"></div>
+                    <h1 class="text-3xl font-bold text-cyan-500 p-2 md:p-0 uppercase">
                         Kutyaeledelek
                     </h1>
+                    <div class="h-px flex-1 bg-gradient-to-l from-transparent via-cyan-500 to-cyan-500"></div>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-12 cursor-pointer p-4">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-12 cursor-pointer p-4 col">
                     <div
                         v-for="product in foodProducts"
                         :key="product.id"
-                        @click="showProductDetail(product.id)"
-                        class="h-48 border-2 border-gray-400 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow relative my-2 md:my-0"
+                        class="border-2 border-cyan-500 bg-white rounded-md shadow-md hover:shadow-lg transition-shadow relative my-2 md:my-0"
                     >
-                        <img :src="product.media[0]?.original_url" alt="" class="h-full w-full pb-8" />
-                        <p class="absolute bottom-2 left-2 font-medium text-sm">{{ product.title }}</p>
-                        <p class="absolute bottom-2 right-2 font-semibold text-sm">{{ product.price }} HUF</p>
+                        <div @click="showProductDetail(product.id)">
+                            <img :src="product.media[0]?.original_url" :alt="product.title" class="h-48 w-full object-cover rounded-t-md" />
+                        </div>
+                        <div class="flex items-center justify-between px-3 py-2">
+                        <div>
+                            <p class="font-medium text-sm">{{ product.title }}</p>
+                            <p class="font-semibold text-sm">{{ product.price }} HUF</p>
+                        </div>
+                        <div>
+
+                        </div>
+                        <div
+                            @click="handleAddToCart"
+                            class="border rounded-xl p-2 border-cyan-500 hover:bg-cyan-500">
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6 text-cyan-500 hover:text-white transition-colors duration-200"
+                        >
+                            <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                            />
+                        </svg>
+                        </div>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <h1 class="text-3xl font-bold text-cyan-500 p-2 md:p-0">
+                <div class="flex items-center justify-center gap-4 max-w-6xl mx-auto px-2">
+                    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-cyan-500 to-cyan-500"></div>
+                    <h1 class="text-3xl font-bold text-cyan-500 p-2 md:p-0 uppercase">
                         Játékok
                     </h1>
+                    <div class="h-px flex-1 bg-gradient-to-l from-transparent via-cyan-500 to-cyan-500"></div>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-12 cursor-pointer p-4">
                     <div
@@ -56,10 +94,12 @@
                         <p class="absolute bottom-2 right-2 font-semibold text-sm">{{ product.price }} HUF</p>
                     </div>
                 </div>
-                <div>
-                    <h1 class="text-3xl font-bold text-cyan-500 p-2 md:p-0">
+                <div class="flex items-center justify-center gap-4 max-w-6xl mx-auto px-2">
+                    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-cyan-500 to-cyan-500"></div>
+                    <h1 class="text-3xl font-bold text-cyan-500 p-2 md:p-0 uppercase">
                         Kiegészítők
                     </h1>
+                    <div class="h-px flex-1 bg-gradient-to-l from-transparent via-cyan-500 to-cyan-500"></div>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-12 cursor-pointer p-4">
                     <div
@@ -73,25 +113,26 @@
                         <p class="absolute bottom-2 right-2 font-semibold text-sm">{{ product.price }} HUF</p>
                     </div>
                 </div>
-            </div>
 
-            <div class="max-w-3xl mx-auto rounded-xl p-8">
-                <div class="flex justify-center items-center text-cyan-500 text-xl font-bold uppercase tracking-wider mb-6">
-                    <span class="text-2xl px-2">🐾</span>
-                    Tápláló Kutyaeledelek
-                    <span class="text-2xl px-2">🐾</span>
-                </div>
-
-                <div class="text-center text-gray-700 text-lg">
-                    A <span class="font-semibold text-gray-800">prémium minőségű kutyaeledelek</span> gondosan kiegyensúlyozott összetételben tartalmazzák a létfontosságú tápanyagokat: magas minőségű fehérjéket, egészséges szénhidrátokat, esszenciális zsírokat, valamint vitaminokat és ásványi anyagokat.
-
-                    <p class="mt-4">
-                    Az ideális táplálék kiválasztása mindig figyelembe veszi kedvenced egyedi igényeit, beleértve korát, méretét, fajtáját, aktivitási szintjét és esetleges egészségügyi sajátosságait.
-                    </p>
-                </div>
-
-                <div class="mt-6 text-center text-cyan-500 font-medium">
-                    A megfelelő táplálék a boldog és egészséges kutyaélet alapja!
+                <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-48 py-12">
+                    <div class="text-center">
+                        <div class="h-24 w-24 bg-white shadow-md rounded-full mx-auto flex items-center justify-center mb-4">
+                            <img src="/fast-delivery.webp" alt="Gyors szállítás" class="w-16 h-16 object-contain" />
+                        </div>
+                        <p class="font-semibold text-lg">Gyors szállítás</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="h-24 w-24 bg-white shadow-md rounded-full mx-auto flex items-center justify-center mb-4">
+                            <img src="/gold.jpg" alt="Prémium minőség" class="w-16 h-16 object-contain" />
+                        </div>
+                        <p class="font-semibold text-lg">Prémium minőség</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="h-24 w-24 bg-white shadow-md rounded-full mx-auto flex items-center justify-center mb-4">
+                            <img src="/hun.jpg" alt="Magyarország" class="w-16 h-16 object-contain" />
+                        </div>
+                        <p class="font-semibold text-lg">Magyarország</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -100,9 +141,11 @@
 
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { router } from '@inertiajs/vue3';
+import Notification from '@/Components/ItemAddOrRemoveNotification.vue';
+import { useCart } from '@/Composables/useCart';
 
 const props = defineProps({
     foodProducts: Array,
@@ -117,6 +160,29 @@ const props = defineProps({
     },
     auth: Object,
 })
+
+const showNotification = ref(false);
+const notificationMessage = ref('');
+const notificationType = ref('success');
+
+const showSuccessMessage = (message) => {
+  notificationMessage.value = message;
+  notificationType.value = 'success';
+  showNotification.value = true;
+};
+
+const showErrorMessage = (message) => {
+  notificationMessage.value = message;
+  notificationType.value = 'error';
+  showNotification.value = true;
+};
+
+const { addToCart } = useCart(props.auth.user);
+
+function handleAddToCart() {
+    addToCart(props.product, 1);
+    showSuccessMessage('Hozzáadta kosarához')
+}
 
 const layoutComponent = computed(() => {
     return props.auth?.user ? AuthenticatedLayout : GuestLayout;

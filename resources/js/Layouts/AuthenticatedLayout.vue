@@ -16,9 +16,9 @@ const showingNavigationDropdown = ref(false);
 
 <template>
     <div>
-        <div class="min-h-screen bg-gray-100 flex flex-col">
+        <div class="min-h-screen flex flex-col bg-gray-100">
             <nav
-                class="bg-neutral-200"
+                class="bg-gray-100"
             >
                 <div class="px-4 sm:px-6 lg:px-12">
                     <div class="flex h-16 justify-between">
@@ -107,7 +107,7 @@ const showingNavigationDropdown = ref(false);
                                         <span class="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                class="inline-flex items-center rounded-full border border-transparent bg-cyan-500 px-4 py-2 text-sm font-medium leading-4 text-white transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                                class="inline-flex items-center rounded-full border border-transparent bg-cyan-500 px-4 py-2 text-sm font-medium leading-4 text-white transition duration-150 ease-in-out hover:bg-cyan-600 focus:outline-none"
                                             >
                                                 {{ user.user_name }}
 

@@ -4,7 +4,7 @@
         <div
           v-if="isVisible"
           :class="[
-            'fixed top-16 right-5 p-4 rounded-md shadow-lg z-50 max-w-md',
+            'fixed top-16 right-5 p-4 rounded-md mt-8 shadow-lg z-50 max-w-md',
             type === 'success' ? 'bg-cyan-500 text-white' : 'bg-red-500 text-white'
           ]"
         >
