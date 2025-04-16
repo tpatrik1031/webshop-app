@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <div class="bg-gray-200 min-h-screen">
+        <div class="bg-gray-100 min-h-screen">
             <div class="max-w-6xl mx-auto py-12 space-y-12">
                 <div>
                     <h1 class="text-3xl font-bold text-cyan-500 text-center">
