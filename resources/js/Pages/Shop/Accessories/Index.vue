@@ -16,7 +16,6 @@
         </div>
 
         <div class="bg-gray-200 min-h-screen">
-            <!-- Termékek -->
             <div class="max-w-6xl mx-auto py-12 space-y-12">
                 <div>
                     <h1 class="text-3xl font-bold text-cyan-500 text-center">
@@ -31,9 +30,12 @@
                         @click="showProductDetail(product.id)"
                         class="h-48 border-2 border-gray-400 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow relative my-2 md:my-0"
                     >
-                        <img :src="product.media[0]?.url" alt="" class="h-full w-full pb-8" />
+                        <img :src="product.media[0]?.url" :alt="product.title" class="h-full w-full pb-8" />
                         <p class="absolute bottom-2 left-2 font-medium text-sm">{{ product.title }}</p>
                         <p class="absolute bottom-2 right-2 font-semibold text-sm">{{ product.price }} HUF</p>
+                    </div>
+                    <div>
+                        
                     </div>
                 </div>
 

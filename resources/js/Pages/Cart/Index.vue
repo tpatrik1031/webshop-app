@@ -81,7 +81,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Link } from '@inertiajs/vue3';
 import ItemNotification from '@/Components/ItemAddOrRemoveNotification.vue';
-import Notification from '@/Components/Notification.vue';
 
 const props = defineProps({
     layout: Object,
@@ -126,7 +125,7 @@ const removeFromCart = (productId) => {
     axios.post(route('cart.remove'), { product_id: productId })
         .then(() => {
             router.reload();
-            showSuccessMessage('Sikeresen eltávolítva a kosarából')
+            showErrorMessage('Sikeresen eltávolítva a kosarából')
         })
         .catch(error => {
             console.error(error);
