@@ -24,13 +24,18 @@ const showingNavigationDropdown = ref(false);
                     <div class="flex h-16 justify-between">
                         <div class="flex shrink-0 items-center">
                             <Link :href="route('home.index')">
+                                <img
+                                    src="/dog-paw-logo.png"
+                                    alt=""
+                                    class="h-16 w-16 object-cover rounded"
+                                >
                                 <h1 class="text-cyan-500 text-xl md:text-3xl font-extrabold mt-1 md:mt-0">
-                                    DOGSHOP
+                                    TAPPANCS-SHOP
                                 </h1>
                             </Link>
                         </div>
 
-                        <div class="hidden sm:flex justify-center flex-1 -mr-8">
+                        <div class="hidden sm:flex justify-center flex-1">
                             <div class="flex space-x-8">
                                 <NavLink
                                     :href="route('home.index')"

@@ -9,7 +9,7 @@
                 <img src="/hero-img.png" alt="Hero" class="w-full h-full object-cover" />
             </div>
 
-            <div class="flex flex-col md:flex-row text-center gap-6 justify-center mb-6 mt-12 mx-2">
+            <div class="flex flex-col md:flex-row text-center gap-6 justify-center mb-10 mt-12 mx-2">
                 <div
                     class="border rounded-full bg-cyan-500 text-white px-8 py-2 font-semibold text-xl cursor-pointer hover:bg-cyan-400 shadow-md">
                     Rólunk
@@ -154,41 +154,57 @@
                         </Link>
                     </div>
                 </div>
-                <div>
-                    <div>
-                        <div
-                            class="h-24 w-24 bg-white shadow-md rounded-full mx-auto flex items-center justify-center mb-4">
-                            <img src="/dog.jpeg" alt="Gyors szállítás" class="w-16 h-16 object-contain" />
+                <div class="flex justify-center items-center pt-28">
+                    <h1 class="text-xl md:text-2xl lg:text-3xl font-bold text-cyan-500 uppercase text-center">
+                        Ismerje meg kedvencei étkezési szokásait, és mindent amit tudni érdemes róluk
+                    </h1>
+                </div>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-36 justify-center py-4">
+                    <div class="relative w-64 h-64 border-1 border-white rounded mt-8 cursor-pointer">
+                        <img src="/dogy.webp" alt="Dog" class="w-full h-full object-cover rounded-lg border-2 border-cyan-500 shadow-md" />
+                        <div class="absolute bottom-6 right-0 bg-cyan-500 text-white text-xl px-6 py-4 rounded-lg border-2 border-white font-bold uppercase">
+                            Kutya
                         </div>
                     </div>
-                    <div>
-
+                    <div class="relative w-64 h-64 border-1 border-white rounded mt-8 cursor-pointer">
+                        <img src="/cat.jpg" alt="Dog" class="w-full h-full object-cover rounded-lg border-2 border-cyan-500 shadow-md" />
+                        <div class="absolute bottom-6 right-0 bg-cyan-500 text-white text-xl px-6 py-4 rounded-lg border-2 border-white font-bold uppercase">
+                            Macska
+                        </div>
                     </div>
-                    <div>
-
+                    <div class="relative w-64 h-64 border-1 border-white rounded mt-8 cursor-pointer">
+                        <div class="w-full h-full object-cover rounded-lg bg-cyan-500 border-2 border-white shadow-md" />
+                        <div class="absolute bottom-6 right-0 bg-white text-cyan-500 text-xl px-6 py-4 rounded-lg border-2 border-white font-bold uppercase">
+                            Egyéb
+                        </div>
                     </div>
+                </div>
+                <div class="flex justify-center items-center pt-28">
+                    <h1 class="text-xl md:text-2xl lg:text-3xl font-bold text-cyan-500 uppercase text-center">
+                        Nálunk mindig ÖN az első
+                    </h1>
                 </div>
                 <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-48 py-12">
                     <div class="text-center cursor-default">
                         <div
-                            class="h-24 w-24 bg-white shadow-md rounded-full mx-auto flex items-center justify-center mb-4">
+                            class="h-24 w-24 bg-white shadow-md rounded-full mx-auto flex items-center justify-center mb-6">
                             <img src="/fast-delivery.webp" alt="Gyors szállítás" class="w-16 h-16 object-contain" />
                         </div>
-                        <p class="font-semibold text-lg">Gyors szállítás</p>
+                        <p class="font-semibold text-lg mb-4">Gyors szállítás</p>
                     </div>
                     <div class="text-center cursor-default">
                         <div
-                            class="h-24 w-24 bg-white shadow-md rounded-full mx-auto flex items-center justify-center mb-4">
+                            class="h-24 w-24 bg-white shadow-md rounded-full mx-auto flex items-center justify-center mb-6">
                             <img src="/gold.jpg" alt="Prémium minőség" class="w-16 h-16 object-contain" />
                         </div>
-                        <p class="font-semibold text-lg">Prémium minőség</p>
+                        <p class="font-semibold text-lg mb-4">Prémium minőség</p>
                     </div>
                     <div class="text-center cursor-default">
                         <div
-                            class="h-24 w-24 bg-white shadow-md rounded-full mx-auto flex items-center justify-center mb-4">
+                            class="h-24 w-24 bg-white shadow-md rounded-full mx-auto flex items-center justify-center mb-6">
                             <img src="/hun.jpg" alt="Magyarország" class="w-16 h-16 object-contain" />
                         </div>
-                        <p class="font-semibold text-lg">Magyarország</p>
+                        <p class="font-semibold text-lg mb-4">Magyarország</p>
                     </div>
                 </div>
             </div>

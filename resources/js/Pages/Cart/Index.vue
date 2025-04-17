@@ -15,7 +15,7 @@
             @close="showNotification = false"
         />
 
-        <div class="bg-gray-200 min-h-screen py-12 px-4">
+        <div class="bg-gray-100 min-h-screen py-12 px-4">
             <div class="max-w-6xl mx-auto space-y-8">
                 <h1 class="text-4xl font-bold text-cyan-600">Kosár</h1>
 
