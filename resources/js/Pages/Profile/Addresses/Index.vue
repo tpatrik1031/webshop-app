@@ -1,5 +1,13 @@
 <template>
     <AuthenticatedLayout>
+
+        <Notification
+            v-if="showNotification"
+            :message="notificationMessage"
+            :type="notificationType"
+            @close="showNotification = false"
+         />
+
         <div class="flex flex-col md:flex-row items-center justify-center w-full">
             <div class="flex flex-col md:flex-row p-8 pb-0 justify-between w-full">
                 <div class="flex flex-col pb-6 md:pb-0">
@@ -115,12 +123,29 @@ import TextInput from "@/Components/TextInput.vue";
 import FormTextArea from '@/Components/Custom/FormTextArea.vue';
 import FormNumberInput from '@/Components/Custom/FormNumberInput.vue';
 import FormError from '@/Components/Custom/FormError.vue';
+import Notification from '@/Components/Notification.vue';
 
 const props = defineProps({
     billingAddress: Object,
     shippingAddress: Object,
     errors: Object
 })
+
+const showNotification = ref(false);
+const notificationMessage = ref('');
+const notificationType = ref('success');
+
+const showSuccessMessage = (message) => {
+  notificationMessage.value = message;
+  notificationType.value = 'success';
+  showNotification.value = true;
+};
+
+const showErrorMessage = (message) => {
+  notificationMessage.value = message;
+  notificationType.value = 'error';
+  showNotification.value = true;
+};
 
 const shippingForm = ref({
     country: '',
@@ -138,11 +163,27 @@ const billingForm = ref({
 });
 
 const saveShippingAddress = () => {
-    router.post(route('account.shipping-addresses.save'), shippingForm.value);
+    router.post(route('account.shipping-addresses.save'), shippingForm.value, {
+        onSuccess: () => {
+            router.reload();
+            showSuccessMessage('Sikeresen frissítette adatait');
+        },
+        onError: () => {
+            showErrorMessage('Hiba történt a szállítási cím mentésekor');
+        }
+    });
 };
 
 const saveBillingAddress = () => {
-    router.post(route('account.billing-addresses.save'), billingForm.value);
+    router.post(route('account.billing-addresses.save'), billingForm.value, {
+        onSuccess: () => {
+            router.reload();
+            showSuccessMessage('Sikeresen frissítette adatait');
+        },
+        onError: () => {
+            showErrorMessage('Hiba történt a számlázási cím mentésekor');
+        }
+    });
 };
 
 onMounted(() => {

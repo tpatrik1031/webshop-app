@@ -116,7 +116,7 @@
                 </template>
 
                 <template #header(actions)>
-                    <div class="hidden md:flex justify-end w-full mr-[23px] text-[#3A36DB]">
+                    <div class="hidden md:flex justify-end w-full mr-[23px] text-cyan-500">
                         Múveletek
                     </div>
                 </template>

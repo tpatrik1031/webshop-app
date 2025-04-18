@@ -1,5 +1,14 @@
 <template>
     <AuthenticatedLayout>
+
+        <Notification
+            v-if="showNotification"
+            :message="notificationMessage"
+            :type="notificationType"
+            @close="showNotification = false"
+         />
+
+
     <div class="flex flex-col items-center justify-center w-full">
         <div class="flex flex-col md:flex-row p-8 pb-0 justify-between w-full">
             <div class="flex flex-col pb-6 md:pb-0">
@@ -51,6 +60,7 @@ import { router } from '@inertiajs/vue3';
 import Button from '@/Components/Button.vue';
 import OrderAddressForm from './components/OrderForm.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Notification from '@/Components/Notification.vue';
 
 const props = defineProps({
     addressData: Object,
@@ -58,6 +68,22 @@ const props = defineProps({
     cartItems: Array,
     total: Object
 });
+
+const showNotification = ref(false);
+const notificationMessage = ref('');
+const notificationType = ref('success');
+
+const showSuccessMessage = (message) => {
+  notificationMessage.value = message;
+  notificationType.value = 'success';
+  showNotification.value = true;
+};
+
+const showErrorMessage = (message) => {
+  notificationMessage.value = message;
+  notificationType.value = 'error';
+  showNotification.value = true;
+};
 
 const orderData = ref({
     address: {
@@ -77,8 +103,6 @@ const updateAddress = (address) => {
     orderData.value.address = address;
 };
 
-
-
 const submitOrder = () => {
     const formData = {
         ...orderData.value.address,
@@ -87,5 +111,6 @@ const submitOrder = () => {
     };
 
     router.post(route('orders.finish'), formData);
+    showSuccessMessage('Sikeresen rögzítettük rendelését');
 };
 </script>

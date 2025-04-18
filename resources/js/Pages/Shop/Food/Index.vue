@@ -8,7 +8,7 @@
             @close="showNotification = false"
         />
 
-        <div class="flex space-x-2 bg-cyan-600 p-2 items-center justify-center">
+        <div class="flex space-x-2 bg-cyan-500 p-2 items-center justify-center">
             <div @click="resetCategory"
                  class="cursor-pointer px-4 py-2 rounded"
                  :class="!selectedCategory ? 'bg-white text-cyan-600' : 'text-white hover:bg-cyan-500'">

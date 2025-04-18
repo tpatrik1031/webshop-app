@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
@@ -8,7 +8,17 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3'
 import Footer from '@/Components/Footer.vue';
+import CartModal from '@/Components/CartModal.vue';
 
+const props = defineProps({
+    cartItems: Array,
+    products: Array,
+    total: Object,
+});
+
+const showCartModal = ref(false);
+const cartTotal = computed(() => usePage().props.cartTotal);
+const cartProducts = usePage().props.products;
 const cartQuantity = usePage().props.cartQuantity;
 const user = usePage().props.auth.user;
 const showingNavigationDropdown = ref(false);
@@ -23,14 +33,14 @@ const showingNavigationDropdown = ref(false);
                 <div class="px-4 sm:px-6 lg:px-12">
                     <div class="flex h-16 justify-between">
                         <div class="flex shrink-0 items-center">
-                            <Link :href="route('home.index')">
+                            <Link :href="route('home.index')" class="flex items-center justify-center gap-4">
                                 <img
-                                    src="/dog-paw-logo.png"
+                                    src="/dog-paw-logo-v2.png"
                                     alt=""
-                                    class="h-16 w-16 object-cover rounded"
+                                    class="h-122 w-12 object-cover rounded"
                                 >
                                 <h1 class="text-cyan-500 text-xl md:text-3xl font-extrabold mt-1 md:mt-0">
-                                    TAPPANCS-SHOP
+                                    TAPPANCS
                                 </h1>
                             </Link>
                         </div>
@@ -86,25 +96,30 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="hidden sm:flex sm:items-center">
-                            <div class="relative cursor-pointer pr-6">
-                                <Link :href="route('cart.index')">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="1.5"
-                                        stroke="currentColor"
-                                        class="w-6 h-6 text-gray-700 hover:text-cyan-600 transition-colors duration-200">
-                                        <path stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                                    </svg>
-
-                                    <span v-if="cartQuantity > 0"
-                                        class="absolute -bottom-2 left-4 bg-cyan-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full shadow-md">
-                                        {{ cartQuantity }}
-                                    </span>
-                                </Link>
+                            <div class="relative cursor-pointer pr-6" @click="showCartModal = true">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6 text-gray-700 hover:text-cyan-600 transition-colors duration-200">
+                                    <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                </svg>
+                                <span v-if="cartQuantity > 0"
+                                    class="absolute -bottom-2 left-4 bg-cyan-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full shadow-md">
+                                    {{ cartQuantity }}
+                                </span>
                             </div>
+
+                            <CartModal
+                                :show="showCartModal"
+                                :cartItems="cartItems"
+                                :products="cartProducts"
+                                :total="cartTotal"
+                                @close="showCartModal = false"
+                            />
 
                             <div class="relative">
                                 <Dropdown align="right" width="48">

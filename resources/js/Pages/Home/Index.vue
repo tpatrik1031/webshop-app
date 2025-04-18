@@ -249,6 +249,7 @@ const { addToCart } = useCart(props.auth.user);
 function handleAddToCart(product) {
     addToCart(product, 1);
     showSuccessMessage('Hozzáadta kosarához')
+    router.reload();
 }
 
 const layoutComponent = computed(() => {

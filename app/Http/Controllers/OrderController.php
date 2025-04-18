@@ -203,7 +203,7 @@ class OrderController extends Controller
 
             DB::commit();
 
-            return redirect(route('home.index'))->with('success', 'The order was succefully created');
+            return redirect(route('orders.create'))->with('success', 'The order was succefully created');
 
         } catch (Exception $e) {
             DB::rollBack();

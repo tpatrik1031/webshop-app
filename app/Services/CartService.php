@@ -13,28 +13,25 @@ class CartService
     public function getProductsAndCartItems()
     {
         if (Auth::check()) {
-            $cartItems = CartItem::with('product')
-                ->where('user_id', Auth::id())
-                ->get();
+            $cartItems = CartItem::where('user_id', Auth::id())->get();
 
-            $formattedCartItems = $cartItems->mapWithKeys(function ($item) {
-                return [$item->product_id => $item];
-            });
+            $cartItemsArray = $cartItems->map(function($item) {
+                return [
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity
+                ];
+            })->toArray();
 
-            $products = Product::whereIn('id', $cartItems->pluck('product_id'))->get();
-
-            return [$products, $formattedCartItems];
+            $cartItemsCollection = collect($cartItemsArray);
         } else {
-            $cartItems = collect(Session::get('cart', []));
-            $formattedCartItems = $cartItems->mapWithKeys(function ($item) {
-                return [$item['product_id'] => $item];
-            });
-
-            $productIds = $cartItems->pluck('product_id');
-            $products = Product::whereIn('id', $productIds)->get();
-
-            return [$products, $formattedCartItems];
+            $cart = Session::get('cart', []);
+            $cartItemsCollection = collect($cart);
         }
+
+        $productIds = $cartItemsCollection->pluck('product_id');
+        $products = Product::whereIn('id', $productIds)->get();
+
+        return [$products, $cartItemsCollection];
     }
 
     public function updateCartItemQuantity($productId, $quantity)
@@ -49,13 +46,17 @@ class CartService
             }
         } else {
             $cartItems = collect(Session::get('cart', []));
-            $cartItems = $cartItems->map(function ($item) use ($productId, $quantity) {
-                if ($item['product_id'] == $productId) {
-                    $item['quantity'] = $quantity;
-                }
-                return $item;
+
+            // Itt is az index-et keressük meg
+            $index = $cartItems->search(function ($item) use ($productId) {
+                return $item['product_id'] == $productId;
             });
-            Session::put('cart', $cartItems->toArray());
+
+            if ($index !== false) {
+                $items = $cartItems->toArray();
+                $items[$index]['quantity'] = $quantity;
+                Session::put('cart', $items);
+            }
         }
     }
 
@@ -68,15 +69,19 @@ class CartService
             );
         } else {
             $cartItems = collect(Session::get('cart', []));
-            $existingItem = $cartItems->firstWhere('product_id', $productId);
 
-            if ($existingItem) {
-                $existingItem['quantity'] += $quantity;
+            $index = $cartItems->search(function ($item) use ($productId) {
+                return $item['product_id'] == $productId;
+            });
+
+            if ($index !== false) {
+                $items = $cartItems->toArray();
+                $items[$index]['quantity'] += $quantity;
+                Session::put('cart', $items);
             } else {
                 $cartItems->push(['product_id' => $productId, 'quantity' => $quantity]);
+                Session::put('cart', $cartItems->toArray());
             }
-
-            Session::put('cart', $cartItems->toArray());
         }
     }
 

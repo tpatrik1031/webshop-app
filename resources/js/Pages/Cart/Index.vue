@@ -1,5 +1,5 @@
 <template>
-    <component :is="layoutComponent" :cartQuantity="totalQuantity">
+    <component :is="layoutComponent" :cartQuantity="totalQuantity" :cartItems="cartItems" :cartProducts="products" :total="total">
 
         <Notification
             v-if="showNotification"

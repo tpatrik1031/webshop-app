@@ -22,7 +22,9 @@ class CartController extends Controller
         $total = 0;
 
         $productData = $products->map(function ($product) use ($cartItems) {
-            $quantity = $cartItems->where('product_id', $product->id)->first()['quantity'] ?? 0;
+            $cartItem = $cartItems->where('product_id', $product->id)->first();
+
+            $quantity = is_object($cartItem) ? $cartItem->quantity : ($cartItem['quantity'] ?? 0);
 
             return [
                 'id' => $product->id,
