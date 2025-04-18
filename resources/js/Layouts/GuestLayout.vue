@@ -70,6 +70,12 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Kiegészítők
                                 </NavLink>
+                                <NavLink
+                                    :href="route('shop.accessories')"
+                                    :active="route().current('shop.accessories')"
+                                >
+                                    Rólunk
+                                </NavLink>
                             </div>
                         </div>
 
@@ -202,6 +208,11 @@ const showingNavigationDropdown = ref(false);
                             :active="route().current('shop.accessories')"
                         >
                             Kiegészítők
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('login')"
+                        >
+                            Rólunk
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('login')"

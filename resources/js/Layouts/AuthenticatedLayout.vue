@@ -45,7 +45,7 @@ const showingNavigationDropdown = ref(false);
                             </Link>
                         </div>
 
-                        <div class="hidden sm:flex justify-center flex-1">
+                        <div class="hidden sm:flex justify-center flex-1 -ml-7">
                             <div class="flex space-x-8">
                                 <NavLink
                                     :href="route('home.index')"
@@ -72,25 +72,10 @@ const showingNavigationDropdown = ref(false);
                                     Kiegészítők
                                 </NavLink>
                                 <NavLink
-                                    :href="route('products.index')"
-                                    :active="route().current('products.index')"
-                                    v-if="user && user.is_admin === 1"
+                                    :href="route('shop.accessories')"
+                                    :active="route().current('shop.accessories')"
                                 >
-                                    Termékek
-                                </NavLink>
-                                <NavLink
-                                    :href="route('orders.index')"
-                                    :active="route().current('orders.index')"
-                                    v-if="user && user.is_admin === 1"
-                                >
-                                    Rendelések
-                                </NavLink>
-                                <NavLink
-                                    :href="route('users.index')"
-                                    :active="route().current('users.index')"
-                                    v-if="user && user.is_admin === 1"
-                                >
-                                    Felhasználók
+                                    Rólunk
                                 </NavLink>
                             </div>
                         </div>
@@ -148,6 +133,30 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
+                                        <DropdownLink
+                                            :href="route('products.index')"
+                                            v-if="user && user.is_admin === 1"
+                                        >
+                                            Termékek
+                                        </DropdownLink>
+                                        <DropdownLink
+                                            :href="route('orders.index')"
+                                            v-if="user && user.is_admin === 1"
+                                        >
+                                            Rendelések
+                                        </DropdownLink>
+                                        <DropdownLink
+                                            :href="route('users.index')"
+                                            v-if="user && user.is_admin === 1"
+                                        >
+                                            Felhasználók
+                                        </DropdownLink>
+                                        <div v-if="user && user.is_admin === 1" class="border border-gray-100 mx-2 my-1"></div>
+                                        <DropdownLink
+                                            :href="route('account.addresses.index')"
+                                        >
+                                            Kis Kedvenceim
+                                        </DropdownLink>
                                         <DropdownLink
                                             :href="route('account.addresses.index')"
                                         >

@@ -49,7 +49,7 @@ export function useCart(user) {
     onMounted(() => {
         loadCart();
     });
-    
+
     if (user) {
         watch(() => user.value, (newUser) => {
             if (newUser) {
