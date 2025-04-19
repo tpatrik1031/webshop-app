@@ -1,51 +1,53 @@
 <template>
     <component :is="layoutComponent">
+      <Notification
+        v-if="showNotification"
+        :message="notificationMessage"
+        :type="notificationType"
+        @close="showNotification = false"
+      />
 
-        <Notification
-            v-if="showNotification"
-            :message="notificationMessage"
-            :type="notificationType"
-            @close="showNotification = false"
+      <div class="max-w-6xl mx-auto py-12 px-4 mt-12 bg-white rounded-xl shadow-lg">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-start">
+          <div class="p-4">
+            <img
+              :src="product.media[0]?.url"
+              alt="Termékkép"
+              class="w-full h-auto rounded-lg border border-cyan-500 hover:shadow-xl transition-shadow duration-300"
             />
+          </div>
+          <div class="space-y-6 p-4 flex flex-col h-full">
+            <div class="flex-grow">
+              <h1 class="text-3xl font-bold text-cyan-500 mb-2">{{ product.title }}</h1>
+              <div class="w-full h-1 bg-cyan-500 rounded mb-4"></div>
+              <p class="text-gray-700 text-lg leading-relaxed">
+                {{ product.description }}
+              </p>
 
-        <div class="max-w-6xl mx-auto py-12 px-4 mt-12">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-32 items-start">
-                <div>
-                    <img
-                        :src="product.media[0]?.url"
-                        alt="Termékkép"
-                        class="w-full h-auto rounded-lg shadow-md"
-                    />
-                </div>
-                <div class="space-y-6">
-                    <h1 class="text-3xl font-bold text-cyan-600">{{ product.title }}</h1>
-                    <p class="text-gray-700 text-lg leading-relaxed">
-                        {{ product.description }}
-                    </p>
-
-                    <div class="text-2xl font-semibold text-green-600">
-                        {{ product.price }} Ft
-                    </div>
-
-                    <div class="flex space-x-4 pt-4">
-                        <button
-                            @click="handleAddToCart"
-                            class="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 px-4 rounded-lg shadow"
-                        >
-                            Kosárba
-                        </button>
-                        <button
-                            @click="buyThisItem()"
-                            class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow"
-                        >
-                            Vásárlás
-                        </button>
-                    </div>
-                </div>
+              <div class="text-2xl font-semibold text-cyan-500 mt-6">
+                {{ product.price }} Ft
+              </div>
             </div>
+
+            <div class="flex flex-wrap justify-between gap-4 pt-6 mt-auto">
+              <button
+                @click="handleAddToCart"
+                class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 px-6 rounded-lg shadow transition-all duration-200 flex items-center"
+              >
+                <span>Kosárba</span>
+              </button>
+              <button
+                @click="buyThisItem()"
+                class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg shadow transition-all duration-200 flex items-center border-2 border-green-500"
+              >
+                <span>Vásárlás</span>
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
     </component>
-</template>
+  </template>
 
 <script setup>
 import { computed } from 'vue';

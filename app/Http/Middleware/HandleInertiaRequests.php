@@ -50,7 +50,7 @@ class HandleInertiaRequests extends Middleware
 
                 return collect(session()->get('cart', []))->values();
             },
-            'products' => function () use ($request) {
+            'cartProducts' => function () use ($request) {
                 if ($request->user()) {
                     $cartItems = CartItem::where('user_id', $request->user()->id)->get();
                     $productIds = $cartItems->pluck('product_id');

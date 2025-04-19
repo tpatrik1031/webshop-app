@@ -75,7 +75,7 @@
                 <template #expandedRow="{ item }">
                     <div class="flex flex-col md:flex-row justify-between px-8">
                         <div class="md:hidden">
-                            <h1 class="font-bold text-base pb-2">{{ trans('quickActions') }}</h1>
+                            <h1 class="font-bold text-base pb-2 text-cyan-500">Múveletek</h1>
                             <div class="flex gap-4 my-4">
                                 <div @click="toggleDeleteModal(item.id)" class="cursor-pointer">
                                     <TrashIcon :width="22" :height="22"/>

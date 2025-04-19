@@ -18,7 +18,7 @@ const props = defineProps({
 
 const showCartModal = ref(false);
 const cartTotal = computed(() => usePage().props.cartTotal);
-const cartProducts = usePage().props.products;
+const cartProducts = usePage().props.cartProducts;
 const cartQuantity = usePage().props.cartQuantity;
 const user = usePage().props.auth.user;
 const showingNavigationDropdown = ref(false);
@@ -72,8 +72,8 @@ const showingNavigationDropdown = ref(false);
                                     Kiegészítők
                                 </NavLink>
                                 <NavLink
-                                    :href="route('shop.accessories')"
-                                    :active="route().current('shop.accessories')"
+                                    :href="route('aboutus.index')"
+                                    :active="route().current('aboutus.index')"
                                 >
                                     Rólunk
                                 </NavLink>
@@ -153,7 +153,7 @@ const showingNavigationDropdown = ref(false);
                                         </DropdownLink>
                                         <div v-if="user && user.is_admin === 1" class="border border-gray-100 mx-2 my-1"></div>
                                         <DropdownLink
-                                            :href="route('account.addresses.index')"
+                                            :href="route('pets.index')"
                                         >
                                             Kis Kedvenceim
                                         </DropdownLink>
@@ -273,6 +273,12 @@ const showingNavigationDropdown = ref(false);
                             Kiegészítők
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
+                            :href="route('aboutus.index')"
+                            :active="route().current('aboutus.index')"
+                        >
+                            Rólunk
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
                             :href="route('users.index')"
                             :active="route().current('users.index')"
                             v-if="user && user.is_admin === 1"
@@ -292,6 +298,12 @@ const showingNavigationDropdown = ref(false);
                             v-if="user && user.is_admin === 1"
                         >
                             Rendelések
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('pets.index')"
+                            :active="route().current('pets.index')"
+                        >
+                            Kis Kedvenceim
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('account.addresses.index')"

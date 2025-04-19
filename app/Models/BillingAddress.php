@@ -16,4 +16,9 @@ class BillingAddress extends Model
         'city',
         'address',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

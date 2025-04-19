@@ -52,7 +52,7 @@ const onInput = (event) => {
     <div class="flex flex-row items-center">
         <input
             :class="[
-                'focus:border-indigo-500 rounded-md shadow-sm custom-padding no-arrows w-full',
+                'focus:border-cyan-500 rounded-md shadow-sm custom-padding no-arrows w-full',
                 {
                     'text-gray-400': disabled
                 }

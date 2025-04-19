@@ -11,14 +11,17 @@
 
             <div class="flex flex-col md:flex-row text-center gap-6 justify-center mb-10 mt-12 mx-2">
                 <div
+                    @click="goToAboutUs('aboutUs')"
                     class="border rounded-full bg-cyan-500 text-white px-8 py-2 font-semibold text-xl cursor-pointer hover:bg-cyan-400 shadow-md">
                     Rólunk
                 </div>
                 <div
+                    @click="goToAboutUs('contact')"
                     class="border border-cyan-500 rounded-full bg-white text-cyan-500 px-8 py-2 font-semibold text-xl cursor-pointer hover:bg-cyan-500 hover:text-white shadow-md">
                     Kapcsolat
                 </div>
                 <div
+                    @click="goToAboutUs('helpMe')"
                     class="border rounded-full bg-cyan-500 text-white px-8 py-2 font-semibold text-xl cursor-pointer hover:bg-cyan-400 shadow-md">
                     Segítség
                 </div>
@@ -202,7 +205,7 @@
                     <div class="text-center cursor-default">
                         <div
                             class="h-24 w-24 bg-white shadow-md rounded-full mx-auto flex items-center justify-center mb-6">
-                            <img src="/hun.jpg" alt="Magyarország" class="w-16 h-16 object-contain" />
+                            <img src="/hun-new.jpg" alt="Magyarország" class="w-16 h-16 object-contain" />
                         </div>
                         <p class="font-semibold text-lg mb-4">Magyarország</p>
                     </div>
@@ -249,7 +252,6 @@ const { addToCart } = useCart(props.auth.user);
 function handleAddToCart(product) {
     addToCart(product, 1);
     showSuccessMessage('Hozzáadta kosarához')
-    router.reload();
 }
 
 const layoutComponent = computed(() => {
@@ -258,5 +260,9 @@ const layoutComponent = computed(() => {
 
 const showProductDetail = (id) => {
     router.visit(route('shop.product.show', id));
+};
+
+const goToAboutUs = (section = '') => {
+  router.visit(route('aboutus.index') + (section ? `#${section}` : ''));
 };
 </script>

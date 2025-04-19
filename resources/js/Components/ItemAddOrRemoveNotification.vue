@@ -4,8 +4,8 @@
         <div
           v-if="isVisible"
           :class="[
-            'fixed top-16 right-5 p-4 rounded-md mt-8 shadow-lg z-50 max-w-md',
-            type === 'success' ? 'bg-cyan-500 text-white' : 'bg-red-500 text-white'
+            'fixed top-6 right-5 p-4 rounded-md mt-8 shadow-lg z-50 max-w-md',
+            type === 'success' ? 'bg-cyan-400 text-white border border-white' : 'bg-red-500 text-white'
           ]"
         >
           <div class="flex items-center">

@@ -21,12 +21,12 @@
             </div>
         </div>
 
-        <div class="flex flex-col md:flex-row justify-between w-full p-8 gap-8 mb-16">
+        <div class="flex flex-col md:flex-row justify-between w-full p-8 gap-8 mt-8 mb-16">
             <div class="flex-col w-full border rounded-xl bg-white shadow-md">
                 <div class="flex p-4">
                     <h1 class="text-xl md:text-2xl font-bold">Szállítási cím</h1>
                 </div>
-                <div class="pt-4 px-4 flex flex-col gap-3 max-h-[50vh] overflow-y-auto">
+                <div class="pt-4 px-4 flex flex-col gap-3 max-h-[50vh]">
                     <InputLabel>Ország</InputLabel>
                     <TextInput
                         v-model="shippingForm.country"
@@ -75,7 +75,7 @@
                 <div class="flex p-4">
                     <h1 class="text-xl md:text-2xl font-bold">Számlázási cím</h1>
                 </div>
-                <div class="pt-4 px-4 flex flex-col gap-3 max-h-[50vh] overflow-y-auto">
+                <div class="pt-4 px-4 flex flex-col gap-3 max-h-[50vh]">
                     <InputLabel>Ország</InputLabel>
                     <TextInput
                         v-model="billingForm.country"

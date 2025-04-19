@@ -23,6 +23,7 @@ class ProductController extends Controller
             ->allowedSorts([
                 'id',
                 'title',
+                'created_at',
             ])
             ->paginate(
                 perPage: request()->get('perPage', 10),

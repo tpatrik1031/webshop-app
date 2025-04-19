@@ -71,8 +71,8 @@ const showingNavigationDropdown = ref(false);
                                     Kiegészítők
                                 </NavLink>
                                 <NavLink
-                                    :href="route('shop.accessories')"
-                                    :active="route().current('shop.accessories')"
+                                    :href="route('aboutus.index')"
+                                    :active="route().current('aboutus.index')"
                                 >
                                     Rólunk
                                 </NavLink>
@@ -210,7 +210,8 @@ const showingNavigationDropdown = ref(false);
                             Kiegészítők
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :href="route('login')"
+                            :href="route('aboutus.index')"
+                            :active="route().current('aboutus.index')"
                         >
                             Rólunk
                         </ResponsiveNavLink>

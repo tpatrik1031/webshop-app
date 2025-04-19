@@ -1,11 +1,24 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
 const props = defineProps({
   show: Boolean,
   cartItems: Array,
-  products: Array,
-  total: Object,
+  products: [Array, Object],
+  total: [Number, String, Object],
+});
+
+const displayItems = computed(() => {
+  if (props.cartItems && props.cartItems.length > 0) {
+    return props.cartItems;
+  }
+
+  if (props.products && props.products.data) {
+    return props.products.data;
+  }
+
+  return props.products || [];
 });
 
 defineEmits(['close']);
@@ -21,17 +34,17 @@ defineEmits(['close']);
         </div>
       </div>
       <div class="bg-white flex-1 overflow-y-auto">
-        <div v-if="cartItems === 0" class="p-6 text-gray-600 text-center">
-          A kosár üres.
+        <div v-if="!displayItems || displayItems.length === 0" class="p-6 text-gray-600 text-center">
+          A kosár üres
         </div>
         <div v-else class="divide-y">
           <div
-            v-for="item in products"
+            v-for="item in displayItems"
             :key="item.id"
             class="p-6 bg-white flex space-x-4"
           >
             <img
-              :src="item.image"
+              :src="item.image || (item.media && item.media[0]?.url)"
               class="w-16 h-16 object-cover rounded-md"
               alt="Product image"
             />

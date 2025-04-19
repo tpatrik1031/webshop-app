@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PetController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -73,11 +74,25 @@ Route::middleware('auth')->group(function () {
         ->name('orders.create');
     Route::post('/orders/finish', [OrderController::class, 'finalizeCart'])
         ->name('orders.finish');
+
+    // Pets
+    Route::get('/mypets', [PetController::class, 'index'])
+        ->name('pets.index');
+    Route::put('/mypets/edit/{pet}', [PetController::class, 'update'])
+        ->name('pets.edit');
+    Route::post('/mypets', [PetController::class, 'store'])
+        ->name('pets.store');
+    Route::delete('/mypets/{pet}/delete', [PetController::class, 'delete'])
+        ->name('pets.delete');
 });
 
 // Home
 Route::get('/home', [HomeController::class, 'index'])
     ->name('home.index');
+
+// AboutUs
+Route::get('/aboutus', [HomeController::class, 'aboutUs'])
+    ->name('aboutus.index');
 
 // Cart
 Route::get('/cart', [CartController::class, 'index'])

@@ -1,78 +1,99 @@
 <template>
     <component :is="layoutComponent" :cartQuantity="totalQuantity" :cartItems="cartItems" :cartProducts="products" :total="total">
+      <Notification
+        v-if="showNotification"
+        :message="notificationMessage"
+        :type="notificationType"
+        @close="showNotification = false"
+      />
 
-        <Notification
-            v-if="showNotification"
-            :message="notificationMessage"
-            :type="notificationType"
-            @close="showNotification = false"
-         />
+      <ItemNotification
+        v-if="showNotification"
+        :message="notificationMessage"
+        :type="notificationType"
+        @close="showNotification = false"
+      />
 
-        <ItemNotification
-            v-if="showNotification"
-            :message="notificationMessage"
-            :type="notificationType"
-            @close="showNotification = false"
-        />
-
-        <div class="bg-gray-100 min-h-screen py-12 px-4">
-            <div class="max-w-6xl mx-auto space-y-8">
-                <h1 class="text-4xl font-bold text-cyan-600">Kosár</h1>
-
-                <div v-if="cartItems.length === 0" class="text-center text-lg text-gray-600">
-                    Jelenleg nincs termék a kosárban.
+      <div class="bg-gray-100 min-h-screen py-12 px-4">
+        <div class="max-w-6xl mx-auto space-y-8">
+            <div class="flex items-center justify-center gap-4 max-w-6xl mx-auto px-2">
+                    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-cyan-500 to-cyan-500"></div>
+                    <h1 class="text-3xl font-bold text-cyan-500 p-2 md:p-0 uppercase">
+                        Kosár
+                    </h1>
+                    <div class="h-px flex-1 bg-gradient-to-l from-transparent via-cyan-500 to-cyan-500"></div>
                 </div>
 
-                <div v-else>
-                    <div class="space-y-4">
-                        <div v-for="(item, index) in products" :key="item.id" class="bg-white p-4 rounded-lg shadow-md">
-                            <div class="flex items-center space-x-4">
-                                <img :src="item.image" alt="product image" class="w-16 h-16 object-cover rounded-md">
-                                <div class="flex-grow">
-                                    <h2 class="text-lg font-semibold">{{ item.title }}</h2>
-                                    <div class="text-sm text-gray-500">Ár: {{ item.price }} Ft</div>
-                                    <div class="text-sm text-gray-500">Mennyiség: {{ item.quantity }}</div>
-                                </div>
-                                <div class="space-x-2">
-                                    <button @click="updateQuantity(item.id, item.quantity - 1), showErrorMessage('Eltávolítva')"
-                                            :disabled="item.quantity <= 1"
-                                            class="px-4 py-2 text-cyan-500 bg-white hover:bg-cyan-600 hover:text-white border border-cyan-500 rounded-lg">
-                                        -
-                                    </button>
-                                    <button @click="updateQuantity(item.id, item.quantity + 1), showSuccessMessage('Hozzáadta kosarához')"
-                                            class="px-4 py-2 text-white bg-cyan-500 hover:bg-cyan-600 rounded-lg">
-                                        +
-                                    </button>
-                                    <button @click="removeFromCart(item.id)"
-                                            class="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg">
-                                        Törlés
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+          <div v-if="cartItems.length === 0" class="text-center py-12 bg-white rounded-xl shadow-lg">
+            <div class="text-xl text-gray-600 mb-4">Jelenleg nincs termék a kosárban.</div>
+            <button class="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-lg shadow transition-all duration-200">
+              Vásárlás folytatása
+            </button>
+          </div>
 
-                    <div class="bg-white p-4 rounded-lg shadow-md mt-6">
-                        <div class="flex justify-between text-lg font-semibold">
-                            <span>Összesen:</span>
-                            <span>{{ total }} Ft</span>
-                        </div>
-                        <div v-if="auth.user" class="mt-4 flex justify-end items-center">
-                            <button @click="orderFinish()" class="w-min py-2 text-white bg-cyan-600 hover:bg-cyan-700 rounded-lg px-4">
-                                Vásárlás
-                            </button>
-                        </div>
-                        <div v-else class="mt-4 flex justify-end items-center text-center">
-                            <Link :href="route('login')" class="w-min py-2 text-white bg-cyan-600 hover:bg-cyan-700 rounded-lg px-4">
-                                Vásárlás
-                            </Link>
-                        </div>
-                    </div>
+          <div v-else class="space-y-6">
+            <div v-for="(item, index) in products" :key="item.id" class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <img :src="item.image" alt="product image" class="w-24 h-24 object-cover rounded-lg shadow">
+                <div class="flex-grow space-y-2">
+                  <h2 class="text-xl font-semibold text-gray-800">{{ item.title }}</h2>
+                  <div class="text-cyan-500 font-medium">{{ item.price }} Ft</div>
                 </div>
+                <div class="flex items-center space-x-3 mt-4 sm:mt-0">
+                  <button
+                    @click="updateQuantity(item.id, item.quantity - 1), showErrorMessage('Eltávolítva')"
+                    :disabled="item.quantity <= 1"
+                    class="p-2 w-10 h-10 flex items-center justify-center text-cyan-500 bg-white hover:bg-cyan-500 hover:text-white border-2 border-cyan-500 rounded-lg transition-colors duration-200"
+                    :class="{'opacity-50 cursor-not-allowed': item.quantity <= 1}"
+                  >
+                    <span class="text-lg font-bold">-</span>
+                  </button>
+                  <span class="text-lg font-medium w-8 text-center">{{ item.quantity }}</span>
+                  <button
+                    @click="updateQuantity(item.id, item.quantity + 1), showSuccessMessage('Hozzáadta kosarához')"
+                    class="p-2 w-10 h-10 flex items-center justify-center text-white bg-cyan-500 hover:bg-cyan-600 rounded-lg transition-colors duration-200"
+                  >
+                    <span class="text-lg font-bold">+</span>
+                  </button>
+                  <button
+                    @click="removeFromCart(item.id)"
+                    class="ml-2 p-2 px-4 text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors duration-200"
+                  >
+                    Törlés
+                  </button>
+                </div>
+              </div>
             </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-lg mt-8">
+              <div class="flex justify-between text-xl font-semibold">
+                <span>Összesen:</span>
+                <span class="text-cyan-500">{{ total }} Ft</span>
+              </div>
+
+              <div v-if="auth.user" class="mt-6 flex justify-end">
+                <button
+                  @click="orderFinish()"
+                  class="py-3 px-8 text-white bg-cyan-500 hover:bg-cyan-600 rounded-lg shadow transition-all duration-200 font-semibold"
+                >
+                  Vásárlás befejezése
+                </button>
+              </div>
+
+              <div v-else class="mt-6 flex justify-end">
+                <Link
+                  :href="route('login')"
+                  class="py-3 px-8 text-white bg-cyan-500 hover:bg-cyan-600 rounded-lg shadow transition-all duration-200 font-semibold"
+                >
+                  Bejelentkezés a vásárláshoz
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </component>
-</template>
+  </template>
 
 <script setup>
 import { computed, ref } from 'vue';

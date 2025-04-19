@@ -27,7 +27,7 @@ onMounted(() => {
 })
 
 const classes = computed(() => {
-    return 'block w-full px-3 py-2 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-500 focus:outline-none'
+    return 'block w-full px-3 py-2 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-cyan-500 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-cyan-600 focus:outline-none'
 })
 
 defineExpose({focus: () => input.value.focus()})

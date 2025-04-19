@@ -4,7 +4,7 @@
         class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
     >
         <p v-if="!hasData || pagination.total < 1">
-            {{ trans('noResultsFound') }}
+            Nincs megjeleníthető adat.
         </p>
 
         <!-- simple and mobile -->
@@ -56,14 +56,7 @@
                 <!--          :color="color"-->
                 <!--        />-->
 
-                <p class="hidden lg:block text-sm text-gray-700 grow">
-                    <span class="font-medium">{{ pagination.from }}</span>
-                    {{ trans('to') }}
-                    <span class="font-medium">{{ pagination.to }}</span>
-                    {{ trans('of') }}
-                    <span class="font-medium">{{ pagination.total }}</span>
-                    {{ trans('results') }}
-                </p>
+
             </div>
             <div class="flex flex-grow flex-row">
                 <nav
@@ -79,7 +72,7 @@
                         @click.prevent="onClick(previousPageUrl)"
                     >
                         <PaginationLeftArrowIcon :width="20"/>
-                        <span>{{ trans('previous') }}</span>
+                        <span>Elöző</span>
                     </component>
 
                     <div class="flex flex-row gap-8">
@@ -114,7 +107,7 @@
                         class="relative inline-flex items-center px-2 py-2 text-sm font-medium gap-2"
                         @click.prevent="onClick(nextPageUrl)"
                     >
-                        <span>{{ trans('next') }}</span>
+                        <span>Következő</span>
                         <PaginationRightArrowIcon :width="20"/>
                     </component>
                 </nav>

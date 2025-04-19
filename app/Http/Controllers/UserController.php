@@ -20,6 +20,7 @@ class UserController extends Controller
             ->allowedSorts([
                 'id',
                 'user_name',
+                'created_at',
             ])
             ->paginate(
                 perPage: request()->get('perPage', 10),

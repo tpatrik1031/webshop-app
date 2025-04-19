@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ShopController extends Controller
 {
@@ -19,20 +20,25 @@ class ShopController extends Controller
         if ($selectedCategory) {
             $category = ProductCategory::where('name', $selectedCategory)->first();
             if ($category) {
-                $products = $category->products()->where('type', 'food')->get();
+                $products = $category->products()
+                    ->where('type', 'food')
+                    ->with('media')
+                    ->paginate(20)
+                    ->withQueryString();
             } else {
-                $products = collect();
+                $products = new LengthAwarePaginator([], 0, 20);
             }
         } else {
-            $products = Product::where('type', 'food')->get();
+            $products = Product::where('type', 'food')
+                ->with('media')
+                ->paginate(20)
+                ->withQueryString();
         }
-
-        $products->load('media');
 
         $categories = ProductCategory::where('type', 'food')->get();
 
         return Inertia::render('Shop/Food/Index', [
-            'products' => $products->map(function ($product) {
+            'products' => $products->through(function ($product) {
                 return [
                     'id' => $product->id,
                     'title' => $product->title,
@@ -50,6 +56,12 @@ class ShopController extends Controller
             'layout' => auth()->check() ? 'AuthenticatedLayout' : 'GuestLayout',
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
+            'pagination' => [
+                'current_page' => $products->currentPage(),
+                'last_page' => $products->lastPage(),
+                'per_page' => $products->perPage(),
+                'total' => $products->total(),
+            ]
         ]);
     }
 
@@ -60,20 +72,25 @@ class ShopController extends Controller
         if ($selectedCategory) {
             $category = ProductCategory::where('name', $selectedCategory)->first();
             if ($category) {
-                $products = $category->products()->where('type', 'toy')->get();
+                $products = $category->products()
+                    ->where('type', 'toy')
+                    ->with('media')
+                    ->paginate(20)
+                    ->withQueryString();
             } else {
-                $products = collect();
+                $products = new LengthAwarePaginator([], 0, 20);
             }
         } else {
-            $products = Product::where('type', 'toy')->get();
+            $products = Product::where('type', 'toy')
+                ->with('media')
+                ->paginate(20)
+                ->withQueryString();
         }
-
-        $products->load('media');
 
         $categories = ProductCategory::where('type', 'toy')->get();
 
         return Inertia::render('Shop/Toy/Index', [
-            'products' => $products->map(function ($product) {
+            'products' => $products->through(function ($product) {
                 return [
                     'id' => $product->id,
                     'title' => $product->title,
@@ -91,6 +108,12 @@ class ShopController extends Controller
             'layout' => auth()->check() ? 'AuthenticatedLayout' : 'GuestLayout',
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
+            'pagination' => [
+                'current_page' => $products->currentPage(),
+                'last_page' => $products->lastPage(),
+                'per_page' => $products->perPage(),
+                'total' => $products->total(),
+            ]
         ]);
     }
 
@@ -101,20 +124,25 @@ class ShopController extends Controller
         if ($selectedCategory) {
             $category = ProductCategory::where('name', $selectedCategory)->first();
             if ($category) {
-                $products = $category->products()->where('type', 'accessories')->get();
+                $products = $category->products()
+                    ->where('type', 'accessories')
+                    ->with('media')
+                    ->paginate(20)
+                    ->withQueryString();
             } else {
-                $products = collect();
+                $products = new LengthAwarePaginator([], 0, 20);
             }
         } else {
-            $products = Product::where('type', 'accessories')->get();
+            $products = Product::where('type', 'accessories')
+                ->with('media')
+                ->paginate(20)
+                ->withQueryString();
         }
-
-        $products->load('media');
 
         $categories = ProductCategory::where('type', 'accessories')->get();
 
         return Inertia::render('Shop/Accessories/Index', [
-            'products' => $products->map(function ($product) {
+            'products' => $products->through(function ($product) {
                 return [
                     'id' => $product->id,
                     'title' => $product->title,
@@ -132,6 +160,12 @@ class ShopController extends Controller
             'layout' => auth()->check() ? 'AuthenticatedLayout' : 'GuestLayout',
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
+            'pagination' => [
+                'current_page' => $products->currentPage(),
+                'last_page' => $products->lastPage(),
+                'per_page' => $products->perPage(),
+                'total' => $products->total(),
+            ]
         ]);
     }
 

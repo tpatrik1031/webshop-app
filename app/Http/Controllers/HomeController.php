@@ -13,9 +13,17 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $foodProducts = $this->withMedia(Product::where('type', 'food')->get());
-        $toyProducts = $this->withMedia(Product::where('type', 'toy')->get());
-        $accessoryProducts = $this->withMedia(Product::where('type', 'accessories')->get());
+        $foodProducts = $this->withMedia(
+            Product::where('type', 'food')->inRandomOrder()->take(4)->get()
+        );
+
+        $toyProducts = $this->withMedia(
+            Product::where('type', 'toy')->inRandomOrder()->take(4)->get()
+        );
+
+        $accessoryProducts = $this->withMedia(
+            Product::where('type', 'accessories')->inRandomOrder()->take(4)->get()
+        );
 
         return Inertia::render('Home/Index', [
             'foodProducts' => $foodProducts,
@@ -33,5 +41,10 @@ class HomeController extends Controller
             $product->image = $product->getFirstMediaUrl('default');
             return $product;
         });
+    }
+
+    public function aboutUs()
+    {
+        return Inertia::render('AboutUs/Index');
     }
 }

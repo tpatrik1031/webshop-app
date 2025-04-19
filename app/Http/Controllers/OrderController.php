@@ -39,6 +39,7 @@ class OrderController extends Controller
                 'id',
                 'total_price',
                 'satus',
+                'created_at',
             ])
             ->paginate(
                 perPage: request()->get('perPage', 10),
